@@ -444,17 +444,7 @@ function CFAHub:CreateWindow(title, gameName, intro)
         end)
     end -- final
 
-local UserInputService = game:GetService("UserInputService")
-local Container = script.Parent -- Adjust this to your GUI container's path
-local UIScale = Container:FindFirstChild("UIScale") -- Adjust this to your UIScale object path
-local Utility = -- Your utility module or functions here
-
--- Detect when Right Shift is pressed
-UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
-    if gameProcessedEvent then return end
-
-    if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.RightShift then
-        -- Toggle UI when Right Shift is pressed
+    function CFAHub:ToggleUI()
         if Container.Visible == true then
             Utility:TweenObject(UIScale, {Scale = 0.95}, 0.25)
             wait(0.25)
@@ -464,8 +454,6 @@ UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
             Container.Visible = true
         end
     end
-end)
-
 
     CFAHub:DraggingEnabled(Header, Container)
 
