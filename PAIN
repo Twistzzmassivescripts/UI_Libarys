@@ -449,25 +449,23 @@ local Container = script.Parent -- Adjust this to your GUI container's path
 local UIScale = Container:FindFirstChild("UIScale") -- Adjust this to your UIScale object path
 local Utility = -- Your utility module or functions here
 
-local function ToggleUI()
-    if Container.Visible then
-        Utility:TweenObject(UIScale, {Scale = 0.95}, 0.25)
-        wait(0.25)
-        Container.Visible = false
-    else
-        Utility:TweenObject(UIScale, {Scale = 1.0}, 0.25)
-        Container.Visible = true
-    end
-end
-
 -- Detect when Right Shift is pressed
 UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
     if gameProcessedEvent then return end
 
     if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.RightShift then
-        ToggleUI()
+        -- Toggle UI when Right Shift is pressed
+        if Container.Visible == true then
+            Utility:TweenObject(UIScale, {Scale = 0.95}, 0.25)
+            wait(0.25)
+            Container.Visible = false
+        else
+            Utility:TweenObject(UIScale, {Scale = 1.0}, 0.25)
+            Container.Visible = true
+        end
     end
 end)
+
 
     CFAHub:DraggingEnabled(Header, Container)
 
