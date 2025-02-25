@@ -25,25 +25,26 @@ local Utility = {}
 local Objects = {}
 local Animate = {}
 
-local isUIVisible = true  -- Track the UI visibility state
+local uiVisible = true  -- Variable to track visibility
+local CFAHubGui  -- Reference to your UI
 
--- Function to hide/show the UI
-local function toggleUIVisibility()
-    isUIVisible = not isUIVisible  -- Toggle the visibility state
-    CFAHubGui.Enabled = isUIVisible  -- Show or hide the UI
+-- Function to toggle UI visibility
+local function toggleUI()
+    if uiVisible then
+        CFAHubGui.Enabled = false  -- Hide UI
+    else
+        CFAHubGui.Enabled = true  -- Show UI
+    end
+    uiVisible = not uiVisible  -- Toggle visibility state
 end
 
--- Listen for RightShift key press to toggle UI visibility
+-- Listen for Right Shift key press to toggle UI
 Input.InputBegan:Connect(function(input, gameProcessedEvent)
-    if gameProcessedEvent then return end  -- Ignore if the game already processed the input
-    if input.KeyCode == Enum.KeyCode.LeftShift or input.KeyCode == Enum.KeyCode.RightShift then
-        toggleUIVisibility()  -- Toggle UI visibility
+    if gameProcessedEvent then return end  -- Ignore if the input is already processed
+    if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.RightShift then
+        toggleUI()  -- Toggle UI visibility
     end
 end)
-
--- Add the rest of your script as usual
--- The code that initializes and creates your UI components will go here.
--- Make sure that CFAHubGui is properly defined when you create the UI window.
 
 function Utility:TweenObject(obj, properties, duration, ...)
     Tween:Create(obj, Tweeninfo(duration, ...), properties):Play()
@@ -179,7 +180,10 @@ function CFAHub:CreateWindow(title, gameName, intro)
         themes[theme] = color3
     end
 
-    local CFAHubGui = Instance.new("ScreenGui")
+    CFAHubGui = Instance.new("ScreenGui")
+    CFAHubGui.Name = GuiName
+    CFAHubGui.Parent = CoreGui  -- Add the ScreenGui to the CoreGui
+
 
     if intro == true then
         local Logo = Instance.new("ImageLabel")
