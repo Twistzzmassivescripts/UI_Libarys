@@ -25,26 +25,6 @@ local Utility = {}
 local Objects = {}
 local Animate = {}
 
--- Your existing Utility functions...
-
--- Create the GUI here (replace `gui` with your actual GUI element reference)
-local gui = script.Parent -- Replace with your GUI object
-
--- Toggle visibility function
-local isVisible = true
-local function toggleGUI()
-    isVisible = not isVisible
-    gui.Visible = isVisible
-end
-
--- Listen for RightShift key press to toggle the GUI
-Input.InputBegan:Connect(function(input, gameProcessed)
-    if gameProcessed then return end -- Ignore input if the game processed it
-    if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.RightShift then
-        toggleGUI() -- Toggle GUI when RightShift is pressed
-    end
-end)
-
 function Utility:TweenObject(obj, properties, duration, ...)
     Tween:Create(obj, Tweeninfo(duration, ...), properties):Play()
 end
@@ -52,23 +32,23 @@ end
 function Utility:Pop(object, shrink)
     local clone = object:Clone()
 
-	clone.AnchorPoint = Vector2.new(0.5, 0.5)
-	clone.Size = clone.Size - UDim2.new(0, shrink, 0, shrink)
-	clone.Position = UDim2.new(0.5, 0, 0.5, 0)
+    clone.AnchorPoint = Vector2.new(0.5, 0.5)
+    clone.Size = clone.Size - UDim2.new(0, shrink, 0, shrink)
+    clone.Position = UDim2.new(0.5, 0, 0.5, 0)
 
-	clone.Parent = object
+    clone.Parent = object
 
-	object.BackgroundTransparency = 1
-	Utility:TweenObject(clone, {Size = object.Size}, 0.2)
+    object.BackgroundTransparency = 1
+    Utility:TweenObject(clone, {Size = object.Size}, 0.2)
 
-	spawn(function()
-		wait(0.2)
+    spawn(function()
+        wait(0.2)
 
-		object.BackgroundTransparency = 0
-		clone:Destroy()
-	end)
+        object.BackgroundTransparency = 0
+        clone:Destroy()
+    end)
 
-	return clone
+    return clone
 end
 
 function Utility:TweenColor(obj, value, t)
@@ -77,12 +57,12 @@ end
 
 function Utility:TweenTransparency(obj, style, value)
     if string.lower(style) == 'bg' then
-		Tween:Create(obj, TweenInfo.new(.25), {BackgroundTransparency = value}):Play()
-	elseif string.lower(style) == 'img' then 
-		Tween:Create(obj, TweenInfo.new(.25), {ImageTransparency = value}):Play()
-	elseif string.lower(style) == 'text' then 
-		Tween:Create(obj, TweenInfo.new(.25), {TextTransparency = value}):Play()
-	end
+        Tween:Create(obj, TweenInfo.new(.25), {BackgroundTransparency = value}):Play()
+    elseif string.lower(style) == 'img' then 
+        Tween:Create(obj, TweenInfo.new(.25), {ImageTransparency = value}):Play()
+    elseif string.lower(style) == 'text' then 
+        Tween:Create(obj, TweenInfo.new(.25), {TextTransparency = value}):Play()
+    end
 end
 
 function Utility:TweenRotation(obj, value)
@@ -170,7 +150,7 @@ function CFAHub:CreateWindow(title, gameName, intro)
         ScrollBar = Color3.fromRGB(149, 149, 149),
         NotiBackground = Color3.fromRGB(0, 0, 0),
         Glow = Color3.fromRGB(79, 195, 247),
-        Logo = "rbxassetid://124194940758905"
+        Logo = "rbxassetid://7409401226"
     }
 
     table.insert(CFAHub, title)
@@ -180,6 +160,22 @@ function CFAHub:CreateWindow(title, gameName, intro)
     end
 
     local CFAHubGui = Instance.new("ScreenGui")
+    CFAHubGui.Name = GuiName
+    CFAHubGui.Parent = CoreGui
+
+    -- Add the window contents here (e.g., buttons, panels, etc.)
+
+    -- Toggle UI visibility with Right Shift key press
+    local isUIVisible = true
+
+    Input.InputBegan:Connect(function(input, gameProcessed)
+        if not gameProcessed and input.UserInputType == Enum.UserInputType.Keyboard then
+            if input.KeyCode == Enum.KeyCode.RightShift then
+                isUIVisible = not isUIVisible
+                CFAHubGui.Enabled = isUIVisible
+            end
+        end
+    end)
 
     if intro == true then
         local Logo = Instance.new("ImageLabel")
@@ -207,6 +203,10 @@ function CFAHub:CreateWindow(title, gameName, intro)
 
         Logo:Destroy()
     end
+end
+
+-- Example usage:
+CFAHub:CreateWindow("My Game UI", "My Game", true)
 
     local Container = Instance.new("Frame")
     local UIScale = Instance.new("UIScale")
