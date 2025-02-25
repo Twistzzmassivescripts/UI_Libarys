@@ -1,4 +1,3 @@
-
 local CFAHub = {}
 
 warn("Preparing UI...")
@@ -25,6 +24,26 @@ local ms = Player:GetMouse()
 local Utility = {}
 local Objects = {}
 local Animate = {}
+
+local isUIVisible = true  -- Track the UI visibility state
+
+-- Function to hide/show the UI
+local function toggleUIVisibility()
+    isUIVisible = not isUIVisible  -- Toggle the visibility state
+    CFAHubGui.Enabled = isUIVisible  -- Show or hide the UI
+end
+
+-- Listen for RightShift key press to toggle UI visibility
+Input.InputBegan:Connect(function(input, gameProcessedEvent)
+    if gameProcessedEvent then return end  -- Ignore if the game already processed the input
+    if input.KeyCode == Enum.KeyCode.LeftShift or input.KeyCode == Enum.KeyCode.RightShift then
+        toggleUIVisibility()  -- Toggle UI visibility
+    end
+end)
+
+-- Add the rest of your script as usual
+-- The code that initializes and creates your UI components will go here.
+-- Make sure that CFAHubGui is properly defined when you create the UI window.
 
 function Utility:TweenObject(obj, properties, duration, ...)
     Tween:Create(obj, Tweeninfo(duration, ...), properties):Play()
