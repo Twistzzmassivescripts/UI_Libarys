@@ -10,45 +10,42 @@ local PlayerMouse = Player:GetMouse()
 
 local redzlib = {
 	Themes = {
-Sharingan = {
-    Darker = {
-        ["Color Hub 1"] = ColorSequence.new({
-            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(25, 5, 5)),  -- Deep dark red
-            ColorSequenceKeypoint.new(0.50, Color3.fromRGB(100, 25, 25)),  -- Vibrant crimson
-            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(25, 5, 5))   -- Deep dark red
-        }),
-        ["Color Hub 2"] = Color3.fromRGB(60, 10, 10),  -- Dark soft red
-        ["Color Stroke"] = Color3.fromRGB(90, 15, 15),  -- Subtle glowing red
-        ["Color Theme"] = Color3.fromRGB(255, 0, 0),  -- Intense bright red
-        ["Color Text"] = Color3.fromRGB(255, 250, 250),  -- Warm white
-        ["Color Dark Text"] = Color3.fromRGB(230, 180, 180)  -- Soft reddish-gray
-    },
-    Dark = {
-        ["Color Hub 1"] = ColorSequence.new({
-            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(45, 10, 10)),  -- Cool dark red
-            ColorSequenceKeypoint.new(0.50, Color3.fromRGB(160, 40, 40)),  -- Medium light red
-            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(45, 10, 10))   -- Cool dark red
-        }),
-        ["Color Hub 2"] = Color3.fromRGB(90, 20, 20),  -- Medium soft red
-        ["Color Stroke"] = Color3.fromRGB(130, 30, 30),  -- Medium glowing red
-        ["Color Theme"] = Color3.fromRGB(240, 0, 0),  -- Vibrant red
-        ["Color Text"] = Color3.fromRGB(255, 240, 240),  -- Soft white with red tint
-        ["Color Dark Text"] = Color3.fromRGB(210, 160, 160)  -- Dark reddish-gray
-    },
-    RedElegant = {
-        ["Color Hub 1"] = ColorSequence.new({
-            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(55, 10, 10)),  -- Elegant deep red
-            ColorSequenceKeypoint.new(0.50, Color3.fromRGB(150, 30, 30)),  -- Vibrant middle red
-            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(55, 10, 10))   -- Elegant deep red
-        }),
-        ["Color Hub 2"] = Color3.fromRGB(80, 15, 15),  -- Deep elegant red
-        ["Color Stroke"] = Color3.fromRGB(120, 20, 20),  -- Elegant glowing red
-        ["Color Theme"] = Color3.fromRGB(220, 0, 0),  -- Intense elegant red
-        ["Color Text"] = Color3.fromRGB(255, 255, 255),  -- Pure white
-        ["Color Dark Text"] = Color3.fromRGB(250, 200, 200)  -- Soft warm gray
-    }
+		Darker = {
+			["Color Hub 1"] = ColorSequence.new({
+				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(5, 10, 25)),  -- Azul marino profundo
+				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(25, 50, 100)),  -- Azul medio vibrante
+				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(5, 10, 25))   -- Azul marino profundo
+			}),
+			["Color Hub 2"] = Color3.fromRGB(10, 30, 60),  -- Azul oscuro suave
+			["Color Stroke"] = Color3.fromRGB(15, 40, 90),  -- Azul con brillo sutil
+			["Color Theme"] = Color3.fromRGB(0, 135, 255),  -- Azul brillante intenso
+			["Color Text"] = Color3.fromRGB(250, 250, 255),  -- Blanco frío
+			["Color Dark Text"] = Color3.fromRGB(180, 200, 230)  -- Gris azulado claro
+		},
+		Dark = {
+			["Color Hub 1"] = ColorSequence.new({
+				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(10, 20, 45)),  -- Azul oscuro fresco
+				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(40, 80, 160)),  -- Azul claro medio
+				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(10, 20, 45))   -- Azul oscuro fresco
+			}),
+			["Color Hub 2"] = Color3.fromRGB(20, 40, 90),  -- Azul suave medio
+			["Color Stroke"] = Color3.fromRGB(30, 60, 130),  -- Azul con brillo medio
+			["Color Theme"] = Color3.fromRGB(0, 175, 240),  -- Azul vibrante
+			["Color Text"] = Color3.fromRGB(240, 245, 255),  -- Blanco con tono azulado suave
+			["Color Dark Text"] = Color3.fromRGB(160, 180, 210)  -- Gris azulado oscuro
+		},
+BlueElegant = {
+    ["Color Hub 1"] = ColorSequence.new({
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(55, 10, 10)),  -- Elegant deep red
+        ColorSequenceKeypoint.new(0.50, Color3.fromRGB(150, 30, 30)),  -- Vibrant middle red
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(55, 10, 10))   -- Elegant deep red
+    }),
+    ["Color Hub 2"] = Color3.fromRGB(80, 15, 15),  -- Deep elegant red
+    ["Color Stroke"] = Color3.fromRGB(120, 20, 20),  -- Elegant glowing red
+    ["Color Theme"] = Color3.fromRGB(220, 0, 0),  -- Intense elegant red
+    ["Color Text"] = Color3.fromRGB(255, 255, 255),  -- Pure white
+    ["Color Dark Text"] = Color3.fromRGB(250, 200, 200)  -- Soft warm gray
 }
-
 	},
 	Info = {
 		Version = "1.1.0"
@@ -56,7 +53,7 @@ Sharingan = {
 	Save = {
 		UISize = {550, 380},
 		TabSize = 160,
-		Theme = "RedElegant"
+		Theme = "Darker"
 	},
 	Settings = {},
 	Connection = {},
@@ -65,7 +62,7 @@ Sharingan = {
 	Options = {},
 	Flags = {},
 	Tabs = {},
-	Icons = loadstring(game:HttpGet("https://raw.githubusercontent.com/MyNameIsObitoUchiha/UI_Libarys/refs/heads/main/Lucide%20Icons"))()
+	Icons = loadstring(game:HttpGet("https://raw.githubusercontent.com/NyxloIsBack/Scripts/refs/heads/main/UI%20Libarys%20/Icons"))()
 }
 
 local ViewportSize = workspace.CurrentCamera.ViewportSize
