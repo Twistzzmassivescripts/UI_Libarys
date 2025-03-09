@@ -62,7 +62,7 @@ BlueElegant = {
 	Options = {},
 	Flags = {},
 	Tabs = {},
-	Icons = loadstring(game:HttpGet("https://raw.githubusercontent.com/NyxloIsBack/Scripts/refs/heads/main/UI%20Libarys%20/Icons"))()
+	Icons = loadstring(game:HttpGet("https://raw.githubusercontent.com/Twistzzisreal/UI_Libarys/refs/heads/main/Lucide%20Icons"))()
 }
 
 local ViewportSize = workspace.CurrentCamera.ViewportSize
