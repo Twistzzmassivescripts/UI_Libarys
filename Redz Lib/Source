@@ -11,16 +11,16 @@ local PlayerMouse = Player:GetMouse()
 local redzlib = {
 	Themes = {
 		Darker = {
-			["Color Hub 1"] = ColorSequence.new({
-				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(5, 10, 25)),  -- Azul marino profundo
-				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(25, 50, 100)),  -- Azul medio vibrante
-				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(5, 10, 25))   -- Azul marino profundo
-			}),
-			["Color Hub 2"] = Color3.fromRGB(10, 30, 60),  -- Azul oscuro suave
-			["Color Stroke"] = Color3.fromRGB(15, 40, 90),  -- Azul con brillo sutil
-			["Color Theme"] = Color3.fromRGB(0, 135, 255),  -- Azul brillante intenso
-			["Color Text"] = Color3.fromRGB(250, 250, 255),  -- Blanco frío
-			["Color Dark Text"] = Color3.fromRGB(180, 200, 230)  -- Gris azulado claro
+    ["Color Hub 1"] = ColorSequence.new({
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(55, 10, 10)),  -- Elegant deep red
+        ColorSequenceKeypoint.new(0.50, Color3.fromRGB(150, 30, 30)),  -- Vibrant middle red
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(55, 10, 10))   -- Elegant deep red
+    }),
+    ["Color Hub 2"] = Color3.fromRGB(80, 15, 15),  -- Deep elegant red
+    ["Color Stroke"] = Color3.fromRGB(120, 20, 20),  -- Elegant glowing red
+    ["Color Theme"] = Color3.fromRGB(220, 0, 0),  -- Intense elegant red
+    ["Color Text"] = Color3.fromRGB(255, 255, 255),  -- Pure white
+    ["Color Dark Text"] = Color3.fromRGB(250, 200, 200)  -- Soft warm gray
 		},
 		Dark = {
 			["Color Hub 1"] = ColorSequence.new({
