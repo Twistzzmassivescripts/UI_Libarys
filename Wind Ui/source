@@ -1,4 +1,4 @@
--- discord.gg/25ms
+-- otamio kanjiero
 
 
 local a
@@ -3975,7 +3975,7 @@ do
                 Folder = f.Folder,
                 Background = f.Background,
                 Size = f.Size and UDim2.new(0, math.clamp(f.Size.X.Offset, 480, 700), 0, math.clamp(f.Size.Y.Offset, 350, 520)) or UDim2.new(0, 580, 0, 460),
-                ToggleKey = f.ToggleKey or Enum.KeyCode.G,
+                ToggleKey = f.ToggleKey or Enum.KeyCode.End,
                 Transparent = f.Transparent or false,
                 Position = UDim2.new(0.5, 0, 0.5, 0),
                 UICorner = 16,
