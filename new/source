@@ -155,7 +155,7 @@ function Library:CreateWindow(hubname)
     Disc_Logo.BorderSizePixel = 0
     Disc_Logo.Position = UDim2.new(0, 5, 0, 1)
     Disc_Logo.Size = UDim2.new(0, 23, 0, 23)
-    Disc_Logo.Image = "http://www.roblox.com/asset/?id=12058969086"
+    Disc_Logo.Image = "http://www.roblox.com/asset/?id=82379930041193"
 
     Disc_Title.Name = "Disc_Title"
     Disc_Title.Parent = Discord
@@ -277,7 +277,7 @@ function Library:CreateWindow(hubname)
     toggle_Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
     toggle_Image.BorderSizePixel = 0
     toggle_Image.Size = UDim2.new(0, 40, 0, 40)
-    toggle_Image.Image = "http://www.roblox.com/asset/?id=12021503727"
+    toggle_Image.Image = "http://www.roblox.com/asset/?id=82379930041193"
     toggle_Image.ImageColor3 = Color3.fromRGB(0, 0, 255)
 
     local minimizetog = false
