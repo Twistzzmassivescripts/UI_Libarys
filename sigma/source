@@ -732,7 +732,7 @@ end)
                     ImageButton.BorderSizePixel = 0
                     ImageButton.Position = UDim2.new(0, 242, 0, 2)
                     ImageButton.Size = UDim2.new(0, 20, 0, 20)
-                    ImageButton.Image = "rbxassetid://3926311105"
+                    ImageButton.Image = "rbxassetid://91453965852539"
                     ImageButton.ImageRectOffset = Vector2.new(940, 784)
                     ImageButton.ImageRectSize = Vector2.new(48, 48)
 
