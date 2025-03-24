@@ -60,174 +60,173 @@ function Library:CreateWindow(hubname)
     end;
 
     -- Instances:
-local ScreenGui = Instance.new("ScreenGui")
-local Body = Instance.new("Frame")
-local Body_Corner = Instance.new("UICorner")
-local Title_Hub = Instance.new("TextLabel")
-local MInimize_Button = Instance.new("TextButton")
-local Discord = Instance.new("TextButton")
-local UICorner = Instance.new("UICorner")
-local Disc_Logo = Instance.new("ImageLabel")
-local Disc_Title = Instance.new("TextLabel")
-local Server_Time = Instance.new("TextLabel")
-local Server_ID = Instance.new("TextLabel")
-local List_Tile = Instance.new("Frame")
-local Tile_Gradient = Instance.new("UIGradient")
-local Toggle = Instance.new("Frame")
-local toggle_corner = Instance.new("UICorner")
-local toggle_Image = Instance.new("ImageButton")
+    local ScreenGui = Instance.new("ScreenGui")
+    local Body = Instance.new("Frame")
+    local Body_Corner = Instance.new("UICorner")
+    local Title_Hub = Instance.new("TextLabel")
+    local MInimize_Button = Instance.new("TextButton")
+    local Discord = Instance.new("TextButton")
+    local UICorner = Instance.new("UICorner")
+    local Disc_Logo = Instance.new("ImageLabel")
+    local Disc_Title = Instance.new("TextLabel")
+    local Server_Time = Instance.new("TextLabel")
+    local Server_ID = Instance.new("TextLabel")
+    local List_Tile = Instance.new("Frame")
+    local Tile_Gradient = Instance.new("UIGradient")
+    local Toggle = Instance.new("Frame")
+    local toggle_corner = Instance.new("UICorner")
+    local toggle_Image = Instance.new("ImageButton")
 
--- Properties:
-ScreenGui.Name = LibName
-ScreenGui.Parent = game.CoreGui
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+    -- Properties:
+    ScreenGui.Name = LibName
+    ScreenGui.Parent = game.CoreGui
+    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 
-game:GetService("UserInputService").InputBegan:connect(function(input) 
-    if input.KeyCode == Enum.KeyCode.LeftControl then
-        Library:ToggleUI()
+    game:GetService("UserInputService").InputBegan:connect(function(input) 
+        if input.KeyCode == Enum.KeyCode.LeftControl then
+            Library:ToggleUI()
+        end
+    end)
+
+    Body.Name = "Body"
+    Body.Parent = ScreenGui
+    Body.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+    Body.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Body.BorderSizePixel = 0
+    Body.Position = UDim2.new(0.258427024, 0, 0.217948765, 0)
+    Body.Size = UDim2.new(0, 600, 0, 350)
+    Body.ClipsDescendants = true
+
+    Body_Corner.CornerRadius = UDim.new(0, 5)
+    Body_Corner.Name = "Body_Corner"
+    Body_Corner.Parent = Body
+
+    Title_Hub.Name = "Title_Hub"
+    Title_Hub.Parent = Body
+    Title_Hub.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Title_Hub.BackgroundTransparency = 1.000
+    Title_Hub.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Title_Hub.BorderSizePixel = 0
+    Title_Hub.Position = UDim2.new(0, 5, 0, 0)
+    Title_Hub.Size = UDim2.new(0, 558, 0, 30)
+    Title_Hub.Font = Enum.Font.SourceSansBold
+    Title_Hub.Text = hubname .. " - " .. GameName
+    Title_Hub.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title_Hub.TextSize = 15.000
+    Title_Hub.TextXAlignment = Enum.TextXAlignment.Left
+
+    MInimize_Button.Name = "MInimize_Button"
+    MInimize_Button.Parent = Body
+    MInimize_Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    MInimize_Button.BackgroundTransparency = 1.000
+    MInimize_Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    MInimize_Button.BorderSizePixel = 0
+    MInimize_Button.Position = UDim2.new(0, 570, 0, 0)
+    MInimize_Button.Rotation = -315
+    MInimize_Button.Size = UDim2.new(0, 30, 0, 30)
+    MInimize_Button.AutoButtonColor = false
+    MInimize_Button.Font = Enum.Font.SourceSans
+    MInimize_Button.Text = "+"
+    MInimize_Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    MInimize_Button.TextSize = 40.000
+    MInimize_Button.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+
+    Discord.Name = "Discord"
+    Discord.Parent = Body
+    Discord.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    Discord.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Discord.BorderSizePixel = 0
+    Discord.Position = UDim2.new(0, 5, 0, 320)
+    Discord.Size = UDim2.new(0, 85, 0, 25)
+    Discord.AutoButtonColor = false
+    Discord.Font = Enum.Font.SourceSans
+    Discord.Text = ""
+    Discord.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Discord.TextSize = 14.000
+
+    UICorner.CornerRadius = UDim.new(0, 5)
+    UICorner.Parent = Discord
+
+    Disc_Logo.Name = "Disc_Logo"
+    Disc_Logo.Parent = Discord
+    Disc_Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Disc_Logo.BackgroundTransparency = 1.000
+    Disc_Logo.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Disc_Logo.BorderSizePixel = 0
+    Disc_Logo.Position = UDim2.new(0, 5, 0, 1)
+    Disc_Logo.Size = UDim2.new(0, 23, 0, 23)
+    Disc_Logo.Image = "http://www.roblox.com/asset/?id=12058969086"
+
+    Disc_Title.Name = "Disc_Title"
+    Disc_Title.Parent = Discord
+    Disc_Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Disc_Title.BackgroundTransparency = 1.000
+    Disc_Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Disc_Title.BorderSizePixel = 0
+    Disc_Title.Position = UDim2.new(0, 35, 0, 0)
+    Disc_Title.Size = UDim2.new(0, 40, 0, 25)
+    Disc_Title.Font = Enum.Font.SourceSansSemibold
+    Disc_Title.Text = "Discord"
+    Disc_Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Disc_Title.TextSize = 14.000
+    Disc_Title.TextXAlignment = Enum.TextXAlignment.Left
+
+    Discord.MouseEnter:Connect(function()
+        utility:Tween(Discord, {BackgroundColor3 = Color3.fromRGB(30, 30, 30)}, .15)
+        utility:Tween(Disc_Logo, {ImageTransparency = 0.7}, .15)
+        utility:Tween(Disc_Title, {TextTransparency = 0.7}, .15)
+    end)
+
+    Discord.MouseLeave:connect(function()
+        utility:Tween(Discord, {BackgroundColor3 = Color3.fromRGB(40, 40, 40)}, .15)
+        utility:Tween(Disc_Logo, {ImageTransparency = 0}, .15)
+        utility:Tween(Disc_Title, {TextTransparency = 0}, .15)
+    end)
+
+    Discord.MouseButton1Click:Connect(function()
+        (setclipboard or toclipboard)("https://discord.gg/25ms")
+        wait(.1)
+        game:GetService("StarterGui"):SetCore("SendNotification",{
+            Title = "Discord",
+            Text = "Discord copied on your clipboard",
+            Button1 = "Okay",
+            Duration = 20
+        })
+    end)
+
+    Server_Time.Name = "Server_Time"
+    Server_Time.Parent = Body
+    Server_Time.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Server_Time.BackgroundTransparency = 1.000
+    Server_Time.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Server_Time.BorderSizePixel = 0
+    Server_Time.Position = UDim2.new(0, 100, 0, 320)
+    Server_Time.Size = UDim2.new(0, 120, 0, 25)
+    Server_Time.Font = Enum.Font.SourceSansSemibold
+    Server_Time.Text = ""
+    Server_Time.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Server_Time.TextSize = 14.000
+    Server_Time.TextXAlignment = Enum.TextXAlignment.Left
+
+    local ServerTimeFunc = {};
+    function ServerTimeFunc:Refresh(textadd)
+        Server_Time.Text = textadd;
+    end;
+
+    function UpdateTime()
+        local GameTime = math.floor(workspace.DistributedGameTime+0.5)
+        local Hour = math.floor(GameTime/(60^2))%24
+        local Minute = math.floor(GameTime/(60^1))%60
+        local Second = math.floor(GameTime/(60^0))%60
+        local FormatTime = string.format("%02d.%02d.%02d", Hour, Minute, Second)
+        ServerTimeFunc:Refresh("Game Time : " .. FormatTime)
     end
-end)
 
-Body.Name = "Body"
-Body.Parent = ScreenGui
-Body.BackgroundColor3 = Color3.fromRGB(30, 30, 255)  -- Changed to blue
-Body.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Body.BorderSizePixel = 0
-Body.Position = UDim2.new(0.258427024, 0, 0.217948765, 0)
-Body.Size = UDim2.new(0, 600, 0, 350)
-Body.ClipsDescendants = true
-
-Body_Corner.CornerRadius = UDim.new(0, 5)
-Body_Corner.Name = "Body_Corner"
-Body_Corner.Parent = Body
-
-Title_Hub.Name = "Title_Hub"
-Title_Hub.Parent = Body
-Title_Hub.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Title_Hub.BackgroundTransparency = 1.000
-Title_Hub.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Title_Hub.BorderSizePixel = 0
-Title_Hub.Position = UDim2.new(0, 5, 0, 0)
-Title_Hub.Size = UDim2.new(0, 558, 0, 30)
-Title_Hub.Font = Enum.Font.SourceSansBold
-Title_Hub.Text = hubname .. " - " .. GameName
-Title_Hub.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title_Hub.TextSize = 15.000
-Title_Hub.TextXAlignment = Enum.TextXAlignment.Left
-
-MInimize_Button.Name = "MInimize_Button"
-MInimize_Button.Parent = Body
-MInimize_Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-MInimize_Button.BackgroundTransparency = 1.000
-MInimize_Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
-MInimize_Button.BorderSizePixel = 0
-MInimize_Button.Position = UDim2.new(0, 570, 0, 0)
-MInimize_Button.Rotation = -315
-MInimize_Button.Size = UDim2.new(0, 30, 0, 30)
-MInimize_Button.AutoButtonColor = false
-MInimize_Button.Font = Enum.Font.SourceSans
-MInimize_Button.Text = "+"
-MInimize_Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-MInimize_Button.TextSize = 40.000
-MInimize_Button.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
-
-Discord.Name = "Discord"
-Discord.Parent = Body
-Discord.BackgroundColor3 = Color3.fromRGB(30, 30, 255)  -- Changed to blue
-Discord.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Discord.BorderSizePixel = 0
-Discord.Position = UDim2.new(0, 5, 0, 320)
-Discord.Size = UDim2.new(0, 85, 0, 25)
-Discord.AutoButtonColor = false
-Discord.Font = Enum.Font.SourceSans
-Discord.Text = ""
-Discord.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Changed text to white
-Discord.TextSize = 14.000
-
-UICorner.CornerRadius = UDim.new(0, 5)
-UICorner.Parent = Discord
-
-Disc_Logo.Name = "Disc_Logo"
-Disc_Logo.Parent = Discord
-Disc_Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Disc_Logo.BackgroundTransparency = 1.000
-Disc_Logo.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Disc_Logo.BorderSizePixel = 0
-Disc_Logo.Position = UDim2.new(0, 5, 0, 1)
-Disc_Logo.Size = UDim2.new(0, 23, 0, 23)
-Disc_Logo.Image = "http://www.roblox.com/asset/?id=12058969086"
-
-Disc_Title.Name = "Disc_Title"
-Disc_Title.Parent = Discord
-Disc_Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Disc_Title.BackgroundTransparency = 1.000
-Disc_Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Disc_Title.BorderSizePixel = 0
-Disc_Title.Position = UDim2.new(0, 35, 0, 0)
-Disc_Title.Size = UDim2.new(0, 40, 0, 25)
-Disc_Title.Font = Enum.Font.SourceSansSemibold
-Disc_Title.Text = "Discord"
-Disc_Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Disc_Title.TextSize = 14.000
-Disc_Title.TextXAlignment = Enum.TextXAlignment.Left
-
-Discord.MouseEnter:Connect(function()
-    utility:Tween(Discord, {BackgroundColor3 = Color3.fromRGB(30, 30, 255)}, .15)  -- Hover effect
-    utility:Tween(Disc_Logo, {ImageTransparency = 0.7}, .15)
-    utility:Tween(Disc_Title, {TextTransparency = 0.7}, .15)
-end)
-
-Discord.MouseLeave:connect(function()
-    utility:Tween(Discord, {BackgroundColor3 = Color3.fromRGB(30, 30, 255)}, .15)  -- Default blue color
-    utility:Tween(Disc_Logo, {ImageTransparency = 0}, .15)
-    utility:Tween(Disc_Title, {TextTransparency = 0}, .15)
-end)
-
-Discord.MouseButton1Click:Connect(function()
-    (setclipboard or toclipboard)("https://discord.gg/twistzzisreal")
-    wait(.1)
-    game:GetService("StarterGui"):SetCore("SendNotification",{
-        Title = "Discord",
-        Text = "Discord copied on your clipboard",
-        Button1 = "Okay",
-        Duration = 20
-    })
-end)
-
-Server_Time.Name = "Server_Time"
-Server_Time.Parent = Body
-Server_Time.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Server_Time.BackgroundTransparency = 1.000
-Server_Time.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Server_Time.BorderSizePixel = 0
-Server_Time.Position = UDim2.new(0, 100, 0, 320)
-Server_Time.Size = UDim2.new(0, 120, 0, 25)
-Server_Time.Font = Enum.Font.SourceSansSemibold
-Server_Time.Text = ""
-Server_Time.TextColor3 = Color3.fromRGB(255, 255, 255)
-Server_Time.TextSize = 14.000
-Server_Time.TextXAlignment = Enum.TextXAlignment.Left
-
-local ServerTimeFunc = {};
-function ServerTimeFunc:Refresh(textadd)
-    Server_Time.Text = textadd;
-end;
-
-function UpdateTime()
-    local GameTime = math.floor(workspace.DistributedGameTime+0.5)
-    local Hour = math.floor(GameTime/(60^2))%24
-    local Minute = math.floor(GameTime/(60^1))%60
-    local Second = math.floor(GameTime/(60^0))%60
-    local FormatTime = string.format("%02d.%02d.%02d", Hour, Minute, Second)
-    ServerTimeFunc:Refresh("Game Time : " .. FormatTime)
-end
-
-spawn(function()
-    while game:GetService('RunService').Heartbeat:Wait() do
-        UpdateTime()
-    end
-end)
-
+    spawn(function()
+        while game:GetService('RunService').Heartbeat:Wait() do
+            UpdateTime()
+        end
+    end)
 
     Server_ID.Name = "Server_ID"
     Server_ID.Parent = Body
@@ -253,8 +252,8 @@ end)
 
     Tile_Gradient.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
-        ColorSequenceKeypoint.new(0.3, Color3.fromRGB(255, 0, 0)),
-        ColorSequenceKeypoint.new(0.7, Color3.fromRGB(255, 0, 0)),
+        ColorSequenceKeypoint.new(0.3, Color3.fromRGB(0, 0, 255) -- Blue),
+        ColorSequenceKeypoint.new(0.7, Color3.fromRGB(0, 0, 255) -- Blue),
         ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0)),
     })
     Tile_Gradient.Name = "Tile_Gradient"
@@ -279,7 +278,7 @@ end)
     toggle_Image.BorderSizePixel = 0
     toggle_Image.Size = UDim2.new(0, 40, 0, 40)
     toggle_Image.Image = "http://www.roblox.com/asset/?id=12021503727"
-    toggle_Image.ImageColor3 = Color3.fromRGB(255, 0, 0)
+    toggle_Image.ImageColor3 = Color3.fromRGB(0, 0, 255) -- Blue
 
     local minimizetog = false
     MInimize_Button.MouseButton1Click:Connect(function()
@@ -382,8 +381,8 @@ end)
 
     TabList_Gradient.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
-        ColorSequenceKeypoint.new(0.3, Color3.fromRGB(255, 0, 0)),
-        ColorSequenceKeypoint.new(0.7, Color3.fromRGB(255, 0, 0)),
+        ColorSequenceKeypoint.new(0.3, Color3.fromRGB(0, 0, 255) -- Blue),
+        ColorSequenceKeypoint.new(0.7, Color3.fromRGB(0, 0, 255) -- Blue),
         ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0)),
     })
     TabList_Gradient.Name = "TabList_Gradient"
@@ -429,8 +428,8 @@ end)
     local ContainerGradients = Instance.new("UIGradient")
     ContainerGradients.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 0, 0)),
-        ColorSequenceKeypoint.new(0.3, Color3.fromRGB(255, 0, 0)),
-        ColorSequenceKeypoint.new(0.7, Color3.fromRGB(255, 0, 0)),
+        ColorSequenceKeypoint.new(0.3, Color3.fromRGB(0, 0, 255) -- Blue),
+        ColorSequenceKeypoint.new(0.7, Color3.fromRGB(0, 0, 255) -- Blue),
         ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 0, 0)),
     })
     ContainerGradients.Name = "ContainerGradients"
@@ -451,7 +450,7 @@ end)
         -- Properties:
         Tab_Items.Name = "Tab_Items"
         Tab_Items.Parent = Tab_Scroll
-        Tab_Items.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        Tab_Items.BackgroundColor3 = Color3.fromRGB(0, 0, 255) -- Blue
         Tab_Items.BackgroundTransparency = 1.000
         Tab_Items.BorderColor3 = Color3.fromRGB(0, 0, 0)
         Tab_Items.BorderSizePixel = 0
@@ -537,7 +536,7 @@ end)
             SectionScroll.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SectionScroll.BorderSizePixel = 0
             SectionScroll.Size = UDim2.new(0, 285, 0, 245)
-            SectionScroll.ScrollBarImageColor3 = Color3.fromRGB(255, 0, 0)
+            SectionScroll.ScrollBarImageColor3 = Color3.fromRGB(0, 0, 255) -- Blue
             SectionScroll.ScrollBarThickness = 4
 
             UIListLayout_Section.Parent = SectionScroll
@@ -607,7 +606,7 @@ end)
                 TextLabel.Size = UDim2.new(1, 0, 0, 20)
                 TextLabel.Font = Enum.Font.SourceSansSemibold
                 TextLabel.Text = title_menu
-                TextLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+                TextLabel.TextColor3 = Color3.fromRGB(0, 0, 255) -- Blue
                 TextLabel.TextSize = 14.000
 
                 List.Name = "List"
@@ -619,8 +618,8 @@ end)
 
                 UIGradient.Color = ColorSequence.new({
                     ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 30, 30)),
-                    ColorSequenceKeypoint.new(0.3, Color3.fromRGB(255, 0, 0)),
-                    ColorSequenceKeypoint.new(0.7, Color3.fromRGB(255, 0, 0)),
+                    ColorSequenceKeypoint.new(0.3, Color3.fromRGB(0, 0, 255) -- Blue),
+                    ColorSequenceKeypoint.new(0.7, Color3.fromRGB(0, 0, 255) -- Blue),
                     ColorSequenceKeypoint.new(1, Color3.fromRGB(30, 30, 30)),
                 })
                 UIGradient.Parent = List
@@ -1086,8 +1085,8 @@ end)
                             TextButton.Text = "Invald...";
                             Key = inputwait.KeyCode.Name;
                             callback();
-                            utility:Tween(TextButton, {TextColor3 = Color3.fromRGB(255, 0, 0)}, .1);
-                            utility:Tween(TextLabel, {TextColor3 = Color3.fromRGB(255, 0, 0)}, .1);
+                            utility:Tween(TextButton, {TextColor3 = Color3.fromRGB(0, 0, 255) -- Blue}, .1);
+                            utility:Tween(TextLabel, {TextColor3 = Color3.fromRGB(0, 0, 255) -- Blue}, .1);
                             wait(.1);
                             utility:Tween(TextButton, {TextColor3 = Color3.fromRGB(255, 255, 255)}, 1);
                             utility:Tween(TextLabel, {TextColor3 = Color3.fromRGB(255, 255, 255)}, 1);
