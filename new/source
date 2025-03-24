@@ -184,7 +184,7 @@ function Library:CreateWindow(hubname)
     end)
 
     Discord.MouseButton1Click:Connect(function()
-        (setclipboard or toclipboard)("https://discord.gg/25ms")
+        (setclipboard or toclipboard)("https://discord.gg/twistzzisreal")
         wait(.1)
         game:GetService("StarterGui"):SetCore("SendNotification",{
             Title = "Discord",
@@ -252,8 +252,8 @@ function Library:CreateWindow(hubname)
 
     Tile_Gradient.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
-        ColorSequenceKeypoint.new(0.3, Color3.fromRGB(0, 0, 255) -- Blue),
-        ColorSequenceKeypoint.new(0.7, Color3.fromRGB(0, 0, 255) -- Blue),
+        ColorSequenceKeypoint.new(0.3, Color3.fromRGB(0, 0, 255)),
+        ColorSequenceKeypoint.new(0.7, Color3.fromRGB(0, 0, 255)),
         ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0)),
     })
     Tile_Gradient.Name = "Tile_Gradient"
@@ -278,7 +278,7 @@ function Library:CreateWindow(hubname)
     toggle_Image.BorderSizePixel = 0
     toggle_Image.Size = UDim2.new(0, 40, 0, 40)
     toggle_Image.Image = "http://www.roblox.com/asset/?id=12021503727"
-    toggle_Image.ImageColor3 = Color3.fromRGB(0, 0, 255) -- Blue
+    toggle_Image.ImageColor3 = Color3.fromRGB(0, 0, 255)
 
     local minimizetog = false
     MInimize_Button.MouseButton1Click:Connect(function()
@@ -381,8 +381,8 @@ function Library:CreateWindow(hubname)
 
     TabList_Gradient.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
-        ColorSequenceKeypoint.new(0.3, Color3.fromRGB(0, 0, 255) -- Blue),
-        ColorSequenceKeypoint.new(0.7, Color3.fromRGB(0, 0, 255) -- Blue),
+        ColorSequenceKeypoint.new(0.3, Color3.fromRGB(0, 0, 255)),
+        ColorSequenceKeypoint.new(0.7, Color3.fromRGB(0, 0, 255)),
         ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0)),
     })
     TabList_Gradient.Name = "TabList_Gradient"
@@ -428,8 +428,8 @@ function Library:CreateWindow(hubname)
     local ContainerGradients = Instance.new("UIGradient")
     ContainerGradients.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 0, 0)),
-        ColorSequenceKeypoint.new(0.3, Color3.fromRGB(0, 0, 255) -- Blue),
-        ColorSequenceKeypoint.new(0.7, Color3.fromRGB(0, 0, 255) -- Blue),
+        ColorSequenceKeypoint.new(0.3, Color3.fromRGB(0, 0, 255)),
+        ColorSequenceKeypoint.new(0.7, Color3.fromRGB(0, 0, 255)),
         ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 0, 0)),
     })
     ContainerGradients.Name = "ContainerGradients"
@@ -450,7 +450,7 @@ function Library:CreateWindow(hubname)
         -- Properties:
         Tab_Items.Name = "Tab_Items"
         Tab_Items.Parent = Tab_Scroll
-        Tab_Items.BackgroundColor3 = Color3.fromRGB(0, 0, 255) -- Blue
+        Tab_Items.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
         Tab_Items.BackgroundTransparency = 1.000
         Tab_Items.BorderColor3 = Color3.fromRGB(0, 0, 0)
         Tab_Items.BorderSizePixel = 0
@@ -536,7 +536,7 @@ function Library:CreateWindow(hubname)
             SectionScroll.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SectionScroll.BorderSizePixel = 0
             SectionScroll.Size = UDim2.new(0, 285, 0, 245)
-            SectionScroll.ScrollBarImageColor3 = Color3.fromRGB(0, 0, 255) -- Blue
+            SectionScroll.ScrollBarImageColor3 = Color3.fromRGB(0, 0, 255)
             SectionScroll.ScrollBarThickness = 4
 
             UIListLayout_Section.Parent = SectionScroll
@@ -606,7 +606,7 @@ function Library:CreateWindow(hubname)
                 TextLabel.Size = UDim2.new(1, 0, 0, 20)
                 TextLabel.Font = Enum.Font.SourceSansSemibold
                 TextLabel.Text = title_menu
-                TextLabel.TextColor3 = Color3.fromRGB(0, 0, 255) -- Blue
+                TextLabel.TextColor3 = Color3.fromRGB(0, 0, 255)
                 TextLabel.TextSize = 14.000
 
                 List.Name = "List"
@@ -618,8 +618,8 @@ function Library:CreateWindow(hubname)
 
                 UIGradient.Color = ColorSequence.new({
                     ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 30, 30)),
-                    ColorSequenceKeypoint.new(0.3, Color3.fromRGB(0, 0, 255) -- Blue),
-                    ColorSequenceKeypoint.new(0.7, Color3.fromRGB(0, 0, 255) -- Blue),
+                    ColorSequenceKeypoint.new(0.3, Color3.fromRGB(0, 0, 255)),
+                    ColorSequenceKeypoint.new(0.7, Color3.fromRGB(0, 0, 255)),
                     ColorSequenceKeypoint.new(1, Color3.fromRGB(30, 30, 30)),
                 })
                 UIGradient.Parent = List
@@ -731,7 +731,7 @@ function Library:CreateWindow(hubname)
                     ImageButton.BorderSizePixel = 0
                     ImageButton.Position = UDim2.new(0, 242, 0, 2)
                     ImageButton.Size = UDim2.new(0, 20, 0, 20)
-                    ImageButton.Image = "rbxassetid://91453965852539"
+                    ImageButton.Image = "rbxassetid://82379930041193"
                     ImageButton.ImageRectOffset = Vector2.new(940, 784)
                     ImageButton.ImageRectSize = Vector2.new(48, 48)
 
@@ -1085,8 +1085,8 @@ function Library:CreateWindow(hubname)
                             TextButton.Text = "Invald...";
                             Key = inputwait.KeyCode.Name;
                             callback();
-                            utility:Tween(TextButton, {TextColor3 = Color3.fromRGB(0, 0, 255) -- Blue}, .1);
-                            utility:Tween(TextLabel, {TextColor3 = Color3.fromRGB(0, 0, 255) -- Blue}, .1);
+                            utility:Tween(TextButton, {TextColor3 = Color3.fromRGB(0, 0, 255)}, .1);
+                            utility:Tween(TextLabel, {TextColor3 = Color3.fromRGB(0, 0, 255)}, .1);
                             wait(.1);
                             utility:Tween(TextButton, {TextColor3 = Color3.fromRGB(255, 255, 255)}, 1);
                             utility:Tween(TextLabel, {TextColor3 = Color3.fromRGB(255, 255, 255)}, 1);
