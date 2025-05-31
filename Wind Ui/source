@@ -4616,7 +4616,7 @@ do
                 Background = ag.Background,
                 User = ag.User or {},
                 Size = ag.Size and UDim2.new(0, math.clamp(ag.Size.X.Offset, 480, 700), 0, math.clamp(ag.Size.Y.Offset, 350, 520)) or UDim2.new(0, 580, 0, 460),
-                ToggleKey = ag.ToggleKey or Enum.KeyCode.G,
+                ToggleKey = ag.ToggleKey or Enum.KeyCode.End,
                 Transparent = ag.Transparent or false,
                 Position = UDim2.new(0.5, 0, 0.5, 0),
                 UICorner = 16,
