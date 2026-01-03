@@ -1,0 +1,231 @@
+--[[ 
+    TWISTZZ UI LIBRARY
+    Converted from GuiToLua export
+    Single-script, loadstring-ready
+]]
+
+-- SERVICES
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UIS = game:GetService("UserInputService")
+local TextService = game:GetService("TextService")
+
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+-- ICONS (from your ModuleScript, now inline)
+local Icons = {
+    ["lucide-user"] = "rbxassetid://10747373176"
+}
+
+-- ================= LIB TABLE =================
+local Library = {}
+Library.__index = Library
+
+-- ================= CREATE WINDOW =================
+function Library:CreateWindow(config)
+    config = config or {}
+
+    -- GUI
+    local UiLibary = Instance.new("ScreenGui")
+    UiLibary.Name = "Ui Libary"
+    UiLibary.Parent = PlayerGui
+    UiLibary.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+    local UiBackground = Instance.new("Frame", UiLibary)
+    UiBackground.Name = "Ui Background"
+    UiBackground.BackgroundColor3 = Color3.fromRGB(0,0,0)
+    UiBackground.BorderSizePixel = 0
+    UiBackground.Size = UDim2.new(0,874,0,852)
+    UiBackground.AnchorPoint = Vector2.new(0.5,0.5)
+    UiBackground.Position = UDim2.new(0.5,0,-0.5,0)
+    Instance.new("UICorner", UiBackground)
+
+    -- CLOSE
+    local CloseUi = Instance.new("TextButton", UiBackground)
+    CloseUi.Text = "X"
+    CloseUi.Size = UDim2.new(0,34,0,29)
+    CloseUi.Position = UDim2.new(0.942,0,0,0)
+    CloseUi.BackgroundTransparency = 1
+    CloseUi.TextColor3 = Color3.new(1,1,1)
+    CloseUi.TextSize = 25
+
+    -- HIDE
+    local HideUi = Instance.new("TextButton", UiBackground)
+    HideUi.Text = "_"
+    HideUi.Size = UDim2.new(0,33,0,37)
+    HideUi.Position = UDim2.new(0.904,0,-0.015,0)
+    HideUi.BackgroundTransparency = 1
+    HideUi.TextColor3 = Color3.new(1,1,1)
+    HideUi.TextSize = 25
+
+    -- DRAG
+    local DragUi = Instance.new("ImageButton", UiBackground)
+    DragUi.Size = UDim2.new(0,30,0,30)
+    DragUi.Position = UDim2.new(0.87,0,0,0)
+    DragUi.BackgroundTransparency = 1
+    DragUi.Image = "rbxassetid://136031891481355"
+
+    -- INFO
+    local UiInfo = Instance.new("Frame", UiBackground)
+    UiInfo.Size = UDim2.new(0,325,0,113)
+    UiInfo.Position = UDim2.new(0.01,0,0.013,0)
+    UiInfo.BackgroundTransparency = 1
+
+    local Name = Instance.new("TextLabel", UiInfo)
+    Name.Text = config.Name or "TWISTZZ"
+    Name.Font = Enum.Font.FredokaOne
+    Name.TextSize = 40
+    Name.TextColor3 = Color3.fromRGB(0,0,255)
+    Name.BackgroundTransparency = 1
+    Name.Size = UDim2.new(0,200,0,50)
+
+    local Name2 = Instance.new("TextLabel", UiInfo)
+    Name2.Text = config.Name2 or "SCRIPTS"
+    Name2.Font = Enum.Font.FredokaOne
+    Name2.TextSize = 40
+    Name2.TextColor3 = Color3.new(1,1,1)
+    Name2.BackgroundTransparency = 1
+    Name2.Position = UDim2.new(0.42,0,0,0)
+    Name2.Size = UDim2.new(0,200,0,50)
+
+    -- underline logic (from your LocalScript)
+    local underline = Instance.new("Frame", Name)
+    underline.BackgroundColor3 = Name.TextColor3
+    underline.BorderSizePixel = 0
+    underline.AnchorPoint = Vector2.new(0.5,1)
+
+    local function updateUnderline()
+        local size = TextService:GetTextSize(Name.Text, Name.TextSize, Name.Font, Vector2.new(1000,1000))
+        underline.Size = UDim2.new(0,size.X,0,6)
+        underline.Position = UDim2.new(0.5,0,1,2)
+    end
+    updateUnderline()
+
+    -- SLIDE IN
+    TweenService:Create(
+        UiBackground,
+        TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),
+        {Position = UDim2.new(0.5,0,0.5,0)}
+    ):Play()
+
+    -- CLOSE LOGIC
+    CloseUi.MouseButton1Click:Connect(function()
+        TweenService:Create(
+            UiBackground,
+            TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.In),
+            {Position = UDim2.new(0.5,0,-0.5,0)}
+        ):Play()
+        task.wait(0.5)
+        UiLibary:Destroy()
+    end)
+
+    -- HIDE LOGIC (+ K key)
+    local hidden = false
+    HideUi.MouseButton1Click:Connect(function()
+        hidden = not hidden
+        TweenService:Create(
+            UiBackground,
+            TweenInfo.new(0.5, Enum.EasingStyle.Quint),
+            {Position = hidden and UDim2.new(0.5,0,-1,0) or UDim2.new(0.5,0,0.5,0)}
+        ):Play()
+    end)
+
+    UIS.InputBegan:Connect(function(i,gp)
+        if not gp and i.KeyCode == Enum.KeyCode.K then
+            HideUi:Activate()
+        end
+    end)
+
+    -- DRAG LOGIC
+    local dragging, dragStart, startPos
+    DragUi.InputBegan:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = i.Position
+            startPos = UiBackground.Position
+        end
+    end)
+
+    UIS.InputChanged:Connect(function(i)
+        if dragging and i.UserInputType == Enum.UserInputType.MouseMovement then
+            local delta = i.Position - dragStart
+            UiBackground.Position = UDim2.new(
+                startPos.X.Scale, startPos.X.Offset + delta.X,
+                startPos.Y.Scale, startPos.Y.Offset + delta.Y
+            )
+        end
+    end)
+
+    UIS.InputEnded:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+        end
+    end)
+
+    self.Gui = UiLibary
+    self.Main = UiBackground
+    return self
+end
+
+-- ================= ELEMENTS =================
+function Library:Button(text, callback)
+    local btn = Instance.new("TextButton", self.Main)
+    btn.Size = UDim2.new(0,200,0,50)
+    btn.Position = UDim2.new(0.4,0,0.3,0)
+    btn.Text = text
+    btn.Font = Enum.Font.FredokaOne
+    btn.TextSize = 20
+    btn.TextColor3 = Color3.new(1,1,1)
+    btn.BackgroundColor3 = Color3.fromRGB(111,111,111)
+    btn.BackgroundTransparency = 0.7
+    Instance.new("UICorner", btn)
+
+    btn.MouseButton1Click:Connect(callback)
+end
+
+function Library:Toggle(text, callback)
+    local on = false
+    local btn = Instance.new("TextButton", self.Main)
+    btn.Size = UDim2.new(0,200,0,50)
+    btn.Position = UDim2.new(0.4,0,0.38,0)
+    btn.Text = text .. " : OFF"
+    btn.Font = Enum.Font.FredokaOne
+    btn.TextSize = 20
+    btn.TextColor3 = Color3.new(1,1,1)
+    btn.BackgroundColor3 = Color3.fromRGB(177,0,6)
+    btn.BackgroundTransparency = 0.7
+    Instance.new("UICorner", btn)
+
+    btn.MouseButton1Click:Connect(function()
+        on = not on
+        btn.Text = text .. (on and " : ON" or " : OFF")
+        btn.BackgroundColor3 = on and Color3.fromRGB(60,180,75) or Color3.fromRGB(177,0,6)
+        callback(on)
+    end)
+end
+
+function Library:Textbox(name, callback)
+    local box = Instance.new("TextBox", self.Main)
+    box.Size = UDim2.new(0,99,0,43)
+    box.Position = UDim2.new(0.5,0,0.46,0)
+    box.Text = "0"
+
+    local label = Instance.new("TextLabel", box)
+    label.Text = name
+    label.Font = Enum.Font.FredokaOne
+    label.TextSize = 20
+    label.TextColor3 = Color3.new(1,1,1)
+    label.BackgroundTransparency = 1
+    label.Position = UDim2.new(-1.4,0,-0.1,0)
+    label.Size = UDim2.new(0,143,0,50)
+
+    box.FocusLost:Connect(function(enter)
+        if enter then
+            callback(box.Text)
+        end
+    end)
+end
+
+-- RETURN LIB
+return setmetatable({}, Library)
