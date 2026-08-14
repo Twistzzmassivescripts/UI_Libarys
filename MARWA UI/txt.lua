@@ -77,13 +77,15 @@ _183goat.DefaultProps = {
 _183goat.Themes = {
     Amethyst = {
         Name = "Amethyst",
-        Background = Color3.fromRGB(15, 15, 15),
-        SideBar = Color3.fromRGB(15, 15, 15),
-        Text = Color3.fromRGB(240, 235, 250),
-        ElementColor = Color3.fromRGB(15, 15, 15),
-        Outline = Color3.fromRGB(255, 87, 87),
-        Placeholder = Color3.fromRGB(255, 87, 87),
-        IconColor = Color3.fromRGB(255, 87, 87),
+        Background = Color3.fromRGB(12, 8, 22),      -- near-black violet
+        SideBar = Color3.fromRGB(16, 10, 28),
+        Text = Color3.fromRGB(235, 225, 255),
+        ElementColor = Color3.fromRGB(24, 14, 42),    -- card fill
+        Outline = Color3.fromRGB(168, 85, 247),       -- neon purple stroke
+        Placeholder = Color3.fromRGB(58, 28, 92),      -- unfilled toggle/slider track
+        IconColor = Color3.fromRGB(200, 140, 255),
+        Accent = Color3.fromRGB(190, 90, 255),         -- NEW: bright accent for "on" states
+        AccentGlow = Color3.fromRGB(216, 160, 255),    -- NEW: hot highlight for pulses
     },
 }
 
@@ -183,28 +185,41 @@ function UI:AddTheme(i)
     _183goat.Themes[i.Name] = i
     return i
 end
+function Utility:GlassStroke(themeKey, thickness, animated)
+    local gradient = _183goat:Create("UIGradient", {
+        Color = ColorSequence.new(
+            Color3.fromRGB(255, 255, 255),
+            Color3.fromRGB(255, 255, 255)
+        ),
+        Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0.1),
+            NumberSequenceKeypoint.new(0.5, 1),
+            NumberSequenceKeypoint.new(1, 1)
+        }),
+        Rotation = -110
+    })
 
-function Utility:GlassStroke(themeKey, thickness)
-    return _183goat:Create("UIStroke", {
+    local stroke = _183goat:Create("UIStroke", {
         Color = Color3.fromRGB(255, 255, 255),
         LineJoinMode = "Round",
         Thickness = thickness or 0.6,
         ThemeID = { Color = themeKey or "Outline" }
-    }, {
-        _183goat:Create("UIGradient", {
-            Color = ColorSequence.new(
-                Color3.fromRGB(255, 255, 255),
-                Color3.fromRGB(255, 255, 255)
-            ),
-            Transparency = NumberSequence.new({
-                NumberSequenceKeypoint.new(0, 0.1),
-                NumberSequenceKeypoint.new(0.5, 1),
-                NumberSequenceKeypoint.new(1, 1)
-            }),
-            Rotation = -110
-        })
-    })
+    }, { gradient })
+
+    -- opt-in continuous rotation, cheap (one tween loop per stroke)
+    if animated ~= false then
+        task.spawn(function()
+            while stroke.Parent do
+                gradient.Rotation = 0
+                Utility:TweenObject(gradient, {Rotation = 360}, 4, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+                task.wait(4)
+            end
+        end)
+    end
+
+    return stroke
 end
+
 
 function Utility:Padding(a, b, c, d)
     if type(a) == "table" then
@@ -678,6 +693,14 @@ function UI:CreateWindow(Config)
         }),
     })
     enableDragging(Main)
+
+    -- INSANE entrance: scale-in with overshoot + fade
+    Main.UIScale.Scale = 0.001
+    Main.BackgroundTransparency = 1
+    Main.Frame.BackgroundTransparency = 1
+    Utility:TweenObject(Main.UIScale, {Scale = 1}, 0.55, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+    Utility:TweenObject(Main, {BackgroundTransparency = (Window.Transparent and 0.1 or 0)}, 0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
 
 	function Window:Toggle()
     if Main.Visible then
@@ -1766,8 +1789,9 @@ end)
                     end
                 end
             end
-            Utility:TweenObject(TabBack, {BackgroundTransparency = (Tab.Border and 0.6 or 1)}, 1)
-            Utility:TweenObject(TabBack.UIStroke, {Transparency = (Tab.Border and 0 or 1)}, 1)
+            Utility:TweenObject(TabBack, {BackgroundTransparency = (Tab.Border and 0.6 or 1)}, 0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+            Utility:TweenObject(TabBack.UIStroke, {Transparency = (Tab.Border and 0 or 1)}, 0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
             Utility:TweenObject(TabTitle, {TextTransparency = 0}, 0.2)
             if TabIcon then
                 Utility:TweenObject(TabIcon, {ImageTransparency = 0}, 0.2)
@@ -2234,13 +2258,28 @@ function Tab:Paragraph1(Config,type)
             }
 
             local Beeee, ButtonFrame, Inner = Utility:Element(RightScroll, ElementFrame, Button.SizeY, "Button")
-            local ButtonTRG = _183goat:Create("TextButton", {
-                Parent = Beeee,
-                Size = UDim2.new(1,0,1,0),
-                TextTransparency = 1,
-                BackgroundTransparency = 1,
-                ZIndex = 25,
-            })
+            ButtonTRG.MouseButton1Click:Connect(function()
+                if Button.Locked then return end
+                spawn(function() pcall(Button.Callback) end)
+
+                Utility:TweenObject(ButtonFrame, {BackgroundTransparency = 0}, 0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+                Utility:TweenObject(Beeee, {Size = UDim2.new(0, Beeee.Size.X.Offset - 4, 0, Button.SizeY)}, 0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+                local ripple = _183goat:Create("UIStroke", {
+                    Parent = ButtonFrame,
+                    Color = Color3.fromRGB(190, 90, 255),
+                    Thickness = 1,
+                    Transparency = 0.2,
+                    ZIndex = 30,
+                })
+                Utility:TweenObject(ripple, {Thickness = 8, Transparency = 1}, 0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+                task.delay(0.4, function() ripple:Destroy() end)
+
+                task.wait(0.1)
+                Utility:TweenObject(ButtonFrame, {BackgroundTransparency = 0.5}, 0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+                Utility:TweenObject(Beeee, {Size = UDim2.new(0, Beeee.Size.X.Offset, 0, Button.SizeY)}, 0.15, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+            end)
+
             local Title, Desc = Utility:ElText(Inner, Button.Title, Button.Desc, "Button")
 
             local Icon
@@ -2320,18 +2359,19 @@ function Tab:Paragraph1(Config,type)
             })
             local Title, Desc = Utility:ElText(Inner, Togglee.Title, Togglee.Desc, "Button")
 
-            local ToggleV = _183goat:Create("Frame", {
-                Parent = ToggleFrame,
-                AnchorPoint = Vector2.new(.96, 0.5),
-                Position = UDim2.new(.96, 0, 0.5, 0),
-                ClipsDescendants = true,
-                BackgroundTransparency = 0.5,
-                Size = UDim2.new(0, 43, 0, 23),
-                ZIndex = 15,
-                ThemeID = {
-                    BackgroundColor3 = "Toggle.Placeholder|Placeholder"
-                }
-            },{
+             _183goat:Create("Frame", {
+                    AnchorPoint = Vector2.new(.96, 0.5),
+                    Position = UDim2.new(0, 18, 0.5, 0),
+                    ClipsDescendants = true,
+                    BackgroundTransparency = 0.8,
+                    Size = UDim2.new(0, 15, 0, 15),
+                    ZIndex = 15,
+                    ThemeID = {
+                        BackgroundColor3 = "Toggle.ToggleVal|Accent"
+                    }
+                },{
+
+
                 _183goat:Create("Frame", {
                     AnchorPoint = Vector2.new(.96, 0.5),
                     Position = UDim2.new(0, 18, 0.5, 0),
@@ -2381,20 +2421,32 @@ function Tab:Paragraph1(Config,type)
             end
 
             local Val = Togglee.Default
-
-            function Togglee:SetValue(newValue)
+  function Togglee:SetValue(newValue)
                 Val = newValue
                 if newValue then
                     Utility:TweenObject(ToggleV.Frame, {Position = UDim2.new(0, 37, 0.5, 0),BackgroundTransparency = 0}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+                    Utility:TweenObject(ToggleV, {BackgroundTransparency = 0.15}, 0.15)
+
+                    local flash = _183goat:Create("UIStroke", {
+                        Parent = ToggleV,
+                        Color = Color3.fromRGB(190, 90, 255),
+                        Thickness = 2,
+                        Transparency = 0,
+                        ZIndex = 20,
+                    })
+                    Utility:TweenObject(flash, {Thickness = 6, Transparency = 1}, 0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+                    task.delay(0.35, function() flash:Destroy() end)
                 else
                     Utility:TweenObject(ToggleV.Frame, {Position = UDim2.new(0, 18,0.5, 0),BackgroundTransparency = 0.8}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+                    Utility:TweenObject(ToggleV, {BackgroundTransparency = 0.5}, 0.15)
                 end
-                    
+
                 spawn(function()
                     pcall(Togglee.Callback, Val)
                 end)
                 return Togglee
             end
+
 
             Togglee:SetValue(Val)
             ToggleTRG.MouseButton1Down:Connect(function()
@@ -2498,6 +2550,7 @@ function Tab:Paragraph1(Config,type)
                     BackgroundColor3 = "Slider.SliderPart|Text"
                 }
             }, {
+
                 _183goat:Create("UICorner", {
                     CornerRadius = UDim.new(0, 12),
                 }),
