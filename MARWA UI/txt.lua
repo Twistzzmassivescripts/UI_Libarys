@@ -77,15 +77,15 @@ _183goat.DefaultProps = {
 _183goat.Themes = {
     Amethyst = {
         Name = "Amethyst",
-        Background = Color3.fromRGB(12, 8, 22),      -- near-black violet
-        SideBar = Color3.fromRGB(16, 10, 28),
-        Text = Color3.fromRGB(235, 225, 255),
-        ElementColor = Color3.fromRGB(24, 14, 42),    -- card fill
-        Outline = Color3.fromRGB(168, 85, 247),       -- neon purple stroke
-        Placeholder = Color3.fromRGB(58, 28, 92),      -- unfilled toggle/slider track
-        IconColor = Color3.fromRGB(200, 140, 255),
-        Accent = Color3.fromRGB(190, 90, 255),         -- NEW: bright accent for "on" states
-        AccentGlow = Color3.fromRGB(216, 160, 255),    -- NEW: hot highlight for pulses
+        Background = Color3.fromRGB(12, 5, 22),      -- deep void purple
+        SideBar = Color3.fromRGB(18, 10, 32),        -- rich dark purple
+        Text = Color3.fromRGB(240, 230, 255),
+        ElementColor = Color3.fromRGB(28, 15, 48),    -- card fill purple
+        Outline = Color3.fromRGB(180, 50, 255),       -- INSANE neon purple stroke
+        Placeholder = Color3.fromRGB(65, 30, 110),      -- unfilled toggle/slider track
+        IconColor = Color3.fromRGB(210, 130, 255),
+        Accent = Color3.fromRGB(200, 50, 255),         -- NEW: hyper bright accent for "on" states
+        AccentGlow = Color3.fromRGB(230, 140, 255),    -- NEW: hot highlight for pulses
     },
 }
 
@@ -202,7 +202,7 @@ function Utility:GlassStroke(themeKey, thickness, animated)
     local stroke = _183goat:Create("UIStroke", {
         Color = Color3.fromRGB(255, 255, 255),
         LineJoinMode = "Round",
-        Thickness = thickness or 0.6,
+        Thickness = thickness or 1.2, -- Made thicker for emphasis
         ThemeID = { Color = themeKey or "Outline" }
     }, { gradient })
 
@@ -211,8 +211,9 @@ function Utility:GlassStroke(themeKey, thickness, animated)
         task.spawn(function()
             while stroke.Parent do
                 gradient.Rotation = 0
-                Utility:TweenObject(gradient, {Rotation = 360}, 4, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-                task.wait(4)
+                -- Sped up the rotation for a more dynamic feel
+                Utility:TweenObject(gradient, {Rotation = 360}, 2.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+                task.wait(2.5)
             end
         end)
     end
@@ -296,6 +297,10 @@ function Utility:Element(RightScroll, ElementFrame, sizeY, scope)
         AutomaticSize = "Y",
         Size = UDim2.new(0, ElementFrame.Size.X.Offset - 10, 0, sizeY or 40),
         ZIndex = 15,
+    }, {
+        _183goat:Create("UIScale", {
+            Scale = 1
+        })
     })
 
     local Card = _183goat:Create("Frame", {
@@ -379,12 +384,15 @@ local function enableDragging(frame)
             or input.UserInputType == Enum.UserInputType.Touch then
 
                 local delta = input.Position - dragStart
-                frame.Position = UDim2.new(
-                    startPos.X.Scale,
-                    startPos.X.Offset + delta.X,
-                    startPos.Y.Scale,
-                    startPos.Y.Offset + delta.Y
-                )
+                -- Add a slight snappy tween to the drag for an insane feel
+                Utility:TweenObject(frame, {
+                    Position = UDim2.new(
+                        startPos.X.Scale,
+                        startPos.X.Offset + delta.X,
+                        startPos.Y.Scale,
+                        startPos.Y.Offset + delta.Y
+                    )
+                }, 0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
             end
         end
     end)
@@ -660,7 +668,7 @@ function UI:CreateWindow(Config)
         Position = UDim2.new(0.5, 0, 0.5, 0),
         BackgroundTransparency = (Window.Transparent and 0.1 or 0),
         BorderSizePixel = 0,
-        BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+        BackgroundColor3 = Color3.fromRGB(15, 8, 25), -- Changed to Deep Purple
         Parent = UIScreen,
         ThemeID = {
             BackgroundColor3 = "Background"
@@ -694,12 +702,13 @@ function UI:CreateWindow(Config)
     })
     enableDragging(Main)
 
-    -- INSANE entrance: scale-in with overshoot + fade
+    -- INSANE entrance: extreme elastic scale-in with overshoot + fade
     Main.UIScale.Scale = 0.001
     Main.BackgroundTransparency = 1
     Main.Frame.BackgroundTransparency = 1
-    Utility:TweenObject(Main.UIScale, {Scale = 1}, 0.55, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-    Utility:TweenObject(Main, {BackgroundTransparency = (Window.Transparent and 0.1 or 0)}, 0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    -- UPGRADED to Elastic for intense snap
+    Utility:TweenObject(Main.UIScale, {Scale = 1}, 0.8, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out)
+    Utility:TweenObject(Main, {BackgroundTransparency = (Window.Transparent and 0.1 or 0)}, 0.45, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
 
 	function Window:Toggle()
@@ -715,7 +724,7 @@ end
         Parent = Main.Frame,
         Size = UDim2.new(0, Window.Size.X.Offset - 182 + 133 + 5, 0, Window.Topbar.Height), --Window.Size.X.Offset - 10 + 133 + 5
         --ClipsDescendants = true,
-        BackgroundColor3 = Color3.fromRGB(33, 33, 33),
+        BackgroundColor3 = Color3.fromRGB(22, 12, 38), -- Changed to Dark Purple
         BackgroundTransparency = 1,
         LayoutOrder = 1,
         Position = UDim2.new(0, 0, 0, 8),
@@ -752,7 +761,7 @@ end
         _183goat:Create("Frame", {
             Size = UDim2.new(1, 0, 1, 0),
             --ClipsDescendants = true,
-            BackgroundColor3 = Color3.fromRGB(33, 33, 33),
+            BackgroundColor3 = Color3.fromRGB(22, 12, 38), -- Changed to Dark Purple
             BackgroundTransparency = 1,
             LayoutOrder = 1,
             Position = UDim2.new(0, 0, 0, 0),
@@ -838,7 +847,7 @@ end
         Parent = Main.Frame,
         Size = UDim2.new(0, 133, 0, Window.Topbar.Height),
         ClipsDescendants = true,
-        BackgroundColor3 = Color3.fromRGB(33, 33, 33),
+        BackgroundColor3 = Color3.fromRGB(22, 12, 38), -- Changed to Dark Purple
         Visible = false,
         LayoutOrder = 2,
         BackgroundTransparency = 0.1,
@@ -890,7 +899,7 @@ end
         Parent = Main.Frame,
         Size = UDim2.new(0, 187, 0, Window.Topbar.Height),
         --ClipsDescendants = true,
-        BackgroundColor3 = Color3.fromRGB(33, 33, 33),
+        BackgroundColor3 = Color3.fromRGB(22, 12, 38), -- Changed to Dark Purple
         LayoutOrder = 3,
         BackgroundTransparency = 1,
         Position = UDim2.new(0, 0, 0, 8),
@@ -1099,7 +1108,7 @@ end
                         Parent = RowFrame,
                         LayoutOrder = colIndex,
                         Size = Width,
-                        BackgroundColor3 = Color3.fromRGB(45, 45, 45),
+                        BackgroundColor3 = Color3.fromRGB(35, 18, 60), -- Changed to deep button purple
                         AutoButtonColor = false,
                         Text = "",
                         ZIndex = 1002,
@@ -1164,7 +1173,7 @@ end
             Size = UDim2.new(0, 27, 0, 27),
             BackgroundTransparency = 0.6,
             ClipsDescendants = true,
-            BackgroundColor3 = Color3.fromRGB(44, 44, 44),
+            BackgroundColor3 = Color3.fromRGB(32, 18, 55), -- Purple tone
             Active = true,
             LayoutOrder = TopBarButton.Order,
             Position = UDim2.new(0, 0, 0, 8),
@@ -1225,7 +1234,7 @@ end
             Size = UDim2.new(0, 27, 0, 27),
             BackgroundTransparency = 0.6,
             ClipsDescendants = true,
-            BackgroundColor3 = Color3.fromRGB(44, 44, 44),
+            BackgroundColor3 = Color3.fromRGB(32, 18, 55), -- Purple tone
             Active = true,
             LayoutOrder = TopBarToggle.Order,
             Position = UDim2.new(0, 0, 0, 8),
@@ -1277,7 +1286,7 @@ end
 
 		local function updateToggleState()
     		Utility:TweenObject(TopToggle, {BackgroundTransparency = TopBarToggle.Default and 0 or 0.6}, 0.2)
-            Utility:TweenObject(TopToggle, {BackgroundColor3 = (TopBarToggle.Default and TopBarToggle.EnableBackground and TopBarToggle.EnableBackground or Color3.fromRGB(44, 44, 44) or TopBarToggle.DisableBackground and TopBarToggle.DisableBackground or Color3.fromRGB(44, 44, 44))}, 0.2)
+            Utility:TweenObject(TopToggle, {BackgroundColor3 = (TopBarToggle.Default and TopBarToggle.EnableBackground and TopBarToggle.EnableBackground or Color3.fromRGB(32, 18, 55) or TopBarToggle.DisableBackground and TopBarToggle.DisableBackground or Color3.fromRGB(32, 18, 55))}, 0.2)
             Icon.Image = not TopBarToggle.Default and GetIcon(TopBarToggle.EnableIcon) or GetIcon(TopBarToggle.DisableIcon)
     		--Utility:TweenObject(ToggleScroll, {BackgroundColor3 = Toggle.Default and UI.Theme.ToggleModule.ScrollNew or UI.Theme.ToggleModule.Scroll}, 0.2)
     		task.delay(0.1, function()
@@ -1441,7 +1450,7 @@ end)
         BorderSizePixel = 0,
         ZIndex = 3,
         BackgroundTransparency = (Window.Transparent and 1 or 0),
-        BackgroundColor3 = Color3.fromRGB(33, 33, 33),
+        BackgroundColor3 = Color3.fromRGB(22, 12, 38), -- Dark purple sidebar
         Parent = Main,
         ThemeID = {
             BackgroundColor3 = "SideBar"
@@ -1453,7 +1462,7 @@ end)
             BorderColor3 = Color3.new(0, 0, 0),
             BackgroundTransparency = (Window.Transparent and 1 or 0),
             Size = UDim2.new(0, 16, 0, 16),
-            BackgroundColor3 = Color3.fromRGB(33, 33, 33),
+            BackgroundColor3 = Color3.fromRGB(22, 12, 38),
             BorderSizePixel = 0,
             ZIndex = 4,
             ThemeID = {
@@ -1466,7 +1475,7 @@ end)
             BackgroundTransparency = (Window.Transparent and 1 or 0),
             BorderColor3 = Color3.new(0, 0, 0),
             Size = UDim2.new(0, 16, 0, 16),
-            BackgroundColor3 = Color3.fromRGB(33, 33, 33),
+            BackgroundColor3 = Color3.fromRGB(22, 12, 38),
             BorderSizePixel = 0,
             ZIndex = 4,
             ThemeID = {
@@ -1486,7 +1495,7 @@ end)
         BorderColor3 = Color3.new(0, 0, 0),
         ClipsDescendants = true,
         Size = UDim2.new(0, Window.SideBarWidth - 20, 0, 40),
-        BackgroundColor3 = Color3.fromRGB(33, 33, 33),
+        BackgroundColor3 = Color3.fromRGB(22, 12, 38),
         ZIndex = 10,
         ThemeID = {
             BackgroundColor3 = "Background"
@@ -1627,13 +1636,14 @@ end)
             BorderColor3 = Color3.new(0, 0, 0),
             BackgroundTransparency = 0,
             Size = UDim2.new(0, Window.SideBarWidth - 10, 0, 25),
-            BackgroundColor3 = Color3.fromRGB(59, 59, 59),
+            BackgroundColor3 = Color3.fromRGB(45, 30, 70), -- Purple Tab Highlight
             BorderSizePixel = 0,
             ZIndex = 4,
             ThemeID = {
                 BackgroundColor3 = "Tab.Background|ElementColor"
             }
         },{
+            _183goat:Create("UIScale", { Scale = 1 }), -- Added for hover bounce
             _183goat:Create("TextButton", {
                 AnchorPoint = Vector2.new(0, 0),
                 Position = UDim2.new(0, 0, 0, 0),
@@ -1729,8 +1739,8 @@ end)
             BorderColor3 = Color3.new(0, 0, 0),
             ClipsDescendants = true,
             BackgroundTransparency = 1,
-Size = UDim2.new(0, Window.Size.X.Offset-Window.SideBarWidth-8, 0, 0)
-            BackgroundColor3 = Color3.fromRGB(33, 33, 33),
+            Size = UDim2.new(1, Window.Size.X.Offset-Window.SideBarWidth-8, 0, 0),
+            BackgroundColor3 = Color3.fromRGB(22, 12, 38), -- Dark purple
             ZIndex = 4,
             ThemeID = {
                 BackgroundColor3 = "SideBar"
@@ -1775,7 +1785,8 @@ Size = UDim2.new(0, Window.Size.X.Offset-Window.SideBarWidth-8, 0, 0)
             ElementFrame.Visible = true
             RightScroll.Visible = true
             Window.ActiveElementFrame = ElementFrame
-            Utility:TweenObject(ElementFrame, {Size = UDim2.new(0, Window.Size.X.Offset-Window.SideBarWidth-8, 0, Window.Size.Y.Offset - Window.Topbar.Height-20 - (Tags > 0 and 37 or 0))}, 0.15)
+            -- Extra bounce for tab switching
+            Utility:TweenObject(ElementFrame, {Size = UDim2.new(0, Window.Size.X.Offset-Window.SideBarWidth-8, 0, Window.Size.Y.Offset - Window.Topbar.Height-20 - (Tags > 0 and 37 or 0))}, 0.25, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
             Utility:TweenObject(ElementFrame, {BackgroundTransparency = 0.2}, 0.2)
             for _, v in next, Window.Tabs do
                 Utility:TweenObject(v, {BackgroundTransparency = 1}, 0.2)
@@ -1799,7 +1810,16 @@ Size = UDim2.new(0, Window.Size.X.Offset-Window.SideBarWidth-8, 0, 0)
             Tab.Callback()
         end
 
+        TabBack.TextButton.MouseEnter:Connect(function()
+            Utility:TweenObject(TabBack.UIScale, {Scale = 1.05}, 0.15, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+        end)
+        TabBack.TextButton.MouseLeave:Connect(function()
+            Utility:TweenObject(TabBack.UIScale, {Scale = 1}, 0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        end)
         TabBack.TextButton.MouseButton1Click:Connect(function()
+            -- Insane click bounce on tab
+            Utility:TweenObject(TabBack.UIScale, {Scale = 0.9}, 0.1, Enum.EasingStyle.Quad)
+            task.delay(0.1, function() Utility:TweenObject(TabBack.UIScale, {Scale = 1}, 0.2, Enum.EasingStyle.Back) end)
             SelectTab()
         end)
         Tab.Select = SelectTab
@@ -1860,10 +1880,9 @@ Size = UDim2.new(0, Window.Size.X.Offset-Window.SideBarWidth-8, 0, 0)
                 ClipsDescendants = true,
                 BackgroundTransparency = 0.5,
                 Size = UDim2.new(0, ElementFrame.Size.X.Offset - 10, 0, Paragraph.SizeY),
-                BackgroundColor3 = Color3.fromRGB(43, 43, 43),
+                BackgroundColor3 = ResolvedColor or Color3.fromRGB(30, 15, 50), -- Deep paragraph purple
                 BorderSizePixel = 0,
                 ZIndex = 15,
-                BackgroundColor3 = ResolvedColor,
                 ThemeID = ParagraphThemeID
             },{
                 _183goat:Create("UIStroke", {
@@ -2078,10 +2097,9 @@ function Tab:Paragraph1(Config,type)
                 ClipsDescendants = true,
                 BackgroundTransparency = 0.5,
                 Size = UDim2.new(0, ElementFrame.Size.X.Offset - 10, 0, Paragraph.SizeY),
-                BackgroundColor3 = Color3.fromRGB(43, 43, 43),
+                BackgroundColor3 = ResolvedColor or Color3.fromRGB(30, 15, 50), -- Deep paragraph purple
                 BorderSizePixel = 0,
                 ZIndex = 15,
-                BackgroundColor3 = ResolvedColor,
                 ThemeID = ParagraphThemeID
             },{
                 _183goat:Create("UIStroke", {
@@ -2258,26 +2276,46 @@ function Tab:Paragraph1(Config,type)
             }
 
             local Beeee, ButtonFrame, Inner = Utility:Element(RightScroll, ElementFrame, Button.SizeY, "Button")
+            local ButtonTRG = _183goat:Create("TextButton", {
+                Parent = Beeee,
+                Size = UDim2.new(1, 0, 1, 0),
+                TextTransparency = 1,
+                BackgroundTransparency = 1,
+                ZIndex = 25,
+            })
+            
+            ButtonTRG.MouseEnter:Connect(function()
+                -- INSANE Hover expansion
+                Utility:TweenObject(Beeee.UIScale, {Scale = 1.02}, 0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+                Utility:TweenObject(ButtonFrame, {BackgroundTransparency = 0.2}, 0.15) 
+            end)
+            ButtonTRG.MouseLeave:Connect(function()
+                Utility:TweenObject(Beeee.UIScale, {Scale = 1}, 0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+                Utility:TweenObject(ButtonFrame, {BackgroundTransparency = 0.5}, 0.15) 
+            end)
+
             ButtonTRG.MouseButton1Click:Connect(function()
                 if Button.Locked then return end
                 spawn(function() pcall(Button.Callback) end)
 
+                -- Extreme Click Pulse
+                Utility:TweenObject(Beeee.UIScale, {Scale = 0.94}, 0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
                 Utility:TweenObject(ButtonFrame, {BackgroundTransparency = 0}, 0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-                Utility:TweenObject(Beeee, {Size = UDim2.new(0, Beeee.Size.X.Offset - 4, 0, Button.SizeY)}, 0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
+                -- Huge neon ripple effect
                 local ripple = _183goat:Create("UIStroke", {
                     Parent = ButtonFrame,
-                    Color = Color3.fromRGB(190, 90, 255),
-                    Thickness = 1,
-                    Transparency = 0.2,
+                    Color = Color3.fromRGB(200, 50, 255),
+                    Thickness = 2,
+                    Transparency = 0,
                     ZIndex = 30,
                 })
-                Utility:TweenObject(ripple, {Thickness = 8, Transparency = 1}, 0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-                task.delay(0.4, function() ripple:Destroy() end)
+                Utility:TweenObject(ripple, {Thickness = 15, Transparency = 1}, 0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+                task.delay(0.5, function() ripple:Destroy() end)
 
                 task.wait(0.1)
                 Utility:TweenObject(ButtonFrame, {BackgroundTransparency = 0.5}, 0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-                Utility:TweenObject(Beeee, {Size = UDim2.new(0, Beeee.Size.X.Offset, 0, Button.SizeY)}, 0.15, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+                Utility:TweenObject(Beeee.UIScale, {Scale = 1}, 0.25, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
             end)
 
             local Title, Desc = Utility:ElText(Inner, Button.Title, Button.Desc, "Button")
@@ -2321,20 +2359,6 @@ function Tab:Paragraph1(Config,type)
                 Button:SetDesc(Button.Desc)
             end
 
-            ButtonTRG.MouseEnter:Connect(function() 
-                Utility:TweenObject(ButtonFrame, {BackgroundTransparency = 0.6}, 0.1) 
-            end)
-            ButtonTRG.MouseLeave:Connect(function()
-                Utility:TweenObject(ButtonFrame, {BackgroundTransparency = 0.5}, 0.1) 
-            end)
-            ButtonTRG.MouseButton1Click:Connect(function()
-                if Button.Locked then return end
-                spawn(function() pcall(Button.Callback) end)
-                Utility:TweenObject(ButtonFrame, {BackgroundTransparency = 0}, 0.1)
-                wait(0.1)
-                Utility:TweenObject(ButtonFrame, {BackgroundTransparency = 0.5}, 0.1)
-            end)
-
             Utility:Search(Window, {Title = Button.Title, Desc = Button.Desc, Icon = "mouse-pointer-click",Type = "Button", TabTitle = Tab.Title, SelectFn = SelectTab, Frame = Beeee, RightScroll = RightScroll,})
             return Button
         end
@@ -2357,30 +2381,39 @@ function Tab:Paragraph1(Config,type)
                 BackgroundTransparency = 1,
                 ZIndex = 25,
             })
+            
+            ToggleTRG.MouseEnter:Connect(function()
+                Utility:TweenObject(Beeee.UIScale, {Scale = 1.02}, 0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+            end)
+            ToggleTRG.MouseLeave:Connect(function()
+                Utility:TweenObject(Beeee.UIScale, {Scale = 1}, 0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+            end)
+            
             local Title, Desc = Utility:ElText(Inner, Togglee.Title, Togglee.Desc, "Button")
 
-             _183goat:Create("Frame", {
+             local ToggleV = _183goat:Create("Frame", {
+                    Parent = ToggleFrame,
                     AnchorPoint = Vector2.new(.96, 0.5),
-                    Position = UDim2.new(0, 18, 0.5, 0),
-                    ClipsDescendants = true,
-                    BackgroundTransparency = 0.8,
-                    Size = UDim2.new(0, 15, 0, 15),
+                    Position = UDim2.new(0.96, -5, 0.5, 0),
+                    ClipsDescendants = false,
+                    BackgroundTransparency = 0.5,
+                    Size = UDim2.new(0, 46, 0, 22),
                     ZIndex = 15,
+                    BackgroundColor3 = Color3.fromRGB(65, 30, 110), -- Placeholder deep purple
                     ThemeID = {
-                        BackgroundColor3 = "Toggle.ToggleVal|Accent"
+                        BackgroundColor3 = "Toggle.Placeholder|Placeholder"
                     }
                 },{
-
-
                 _183goat:Create("Frame", {
-                    AnchorPoint = Vector2.new(.96, 0.5),
-                    Position = UDim2.new(0, 18, 0.5, 0),
+                    AnchorPoint = Vector2.new(0, 0.5),
+                    Position = UDim2.new(0, 3, 0.5, 0),
                     ClipsDescendants = true,
                     BackgroundTransparency = 0.8,
-                    Size = UDim2.new(0, 15, 0, 15),
+                    Size = UDim2.new(0, 16, 0, 16),
                     ZIndex = 15,
+                    BackgroundColor3 = Color3.fromRGB(200, 50, 255),
                     ThemeID = {
-                        BackgroundColor3 = "Toggle.ToggleVal|Text"
+                        BackgroundColor3 = "Toggle.ToggleVal|Accent"
                     }
                 },{
                     _183goat:Create("UICorner", {
@@ -2424,21 +2457,22 @@ function Tab:Paragraph1(Config,type)
   function Togglee:SetValue(newValue)
                 Val = newValue
                 if newValue then
-                    Utility:TweenObject(ToggleV.Frame, {Position = UDim2.new(0, 37, 0.5, 0),BackgroundTransparency = 0}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-                    Utility:TweenObject(ToggleV, {BackgroundTransparency = 0.15}, 0.15)
+                    -- Insane bouncy snap
+                    Utility:TweenObject(ToggleV.Frame, {Position = UDim2.new(1, -19, 0.5, 0),BackgroundTransparency = 0}, 0.35, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out)
+                    Utility:TweenObject(ToggleV, {BackgroundColor3 = Color3.fromRGB(180, 50, 255), BackgroundTransparency = 0.15}, 0.25)
 
                     local flash = _183goat:Create("UIStroke", {
                         Parent = ToggleV,
-                        Color = Color3.fromRGB(190, 90, 255),
+                        Color = Color3.fromRGB(230, 140, 255),
                         Thickness = 2,
                         Transparency = 0,
                         ZIndex = 20,
                     })
-                    Utility:TweenObject(flash, {Thickness = 6, Transparency = 1}, 0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-                    task.delay(0.35, function() flash:Destroy() end)
+                    Utility:TweenObject(flash, {Thickness = 8, Transparency = 1}, 0.45, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+                    task.delay(0.45, function() flash:Destroy() end)
                 else
-                    Utility:TweenObject(ToggleV.Frame, {Position = UDim2.new(0, 18,0.5, 0),BackgroundTransparency = 0.8}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-                    Utility:TweenObject(ToggleV, {BackgroundTransparency = 0.5}, 0.15)
+                    Utility:TweenObject(ToggleV.Frame, {Position = UDim2.new(0, 3, 0.5, 0),BackgroundTransparency = 0.8}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+                    Utility:TweenObject(ToggleV, {BackgroundColor3 = Color3.fromRGB(65, 30, 110), BackgroundTransparency = 0.5}, 0.2)
                 end
 
                 spawn(function()
@@ -2450,22 +2484,28 @@ function Tab:Paragraph1(Config,type)
 
             Togglee:SetValue(Val)
             ToggleTRG.MouseButton1Down:Connect(function()
-                Utility:TweenObject(ToggleV.Frame, {Size = UDim2.new(0, 15, 0, 8),BackgroundTransparency = (Val and 0 or 0.8)}, 0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+                -- Shrink down dot slightly on press
+                Utility:TweenObject(ToggleV.Frame, {Size = UDim2.new(0, 14, 0, 10),BackgroundTransparency = (Val and 0 or 0.8)}, 0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
             end)
             ToggleTRG.MouseButton1Up:Connect(function()
-                Utility:TweenObject(ToggleV.Frame, {Size = UDim2.new(0, 15, 0, 15),BackgroundTransparency = (Val and 0 or 0.8)}, 0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+                Utility:TweenObject(ToggleV.Frame, {Size = UDim2.new(0, 16, 0, 16),BackgroundTransparency = (Val and 0 or 0.8)}, 0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
             end)
             ToggleTRG.MouseLeave:Connect(function()
-                Utility:TweenObject(ToggleV.Frame, {Size = UDim2.new(0, 15, 0, 15),BackgroundTransparency = (Val and 0 or 0.8)}, 0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+                Utility:TweenObject(ToggleV.Frame, {Size = UDim2.new(0, 16, 0, 16),BackgroundTransparency = (Val and 0 or 0.8)}, 0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
             end)
             ToggleTRG.InputEnded:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Touch then
-                    Utility:TweenObject(ToggleV.Frame, {Size = UDim2.new(0, 15, 0, 15),BackgroundTransparency = (Val and 0 or 0.8)}, 0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+                    Utility:TweenObject(ToggleV.Frame, {Size = UDim2.new(0, 16, 0, 16),BackgroundTransparency = (Val and 0 or 0.8)}, 0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
                 end
             end)
             ToggleTRG.MouseButton1Click:Connect(function()
                 if Togglee.Locked then return end
                 Val = not Val
+                
+                -- Pop the whole container on toggle
+                Utility:TweenObject(Beeee.UIScale, {Scale = 0.95}, 0.1, Enum.EasingStyle.Quad)
+                task.delay(0.1, function() Utility:TweenObject(Beeee.UIScale, {Scale = 1.02}, 0.2, Enum.EasingStyle.Back) end)
+                
                 Togglee:SetValue(Val)
             end)
             Utility:Search(Window, {Title = Togglee.Title, Desc = Togglee.Desc, Icon = "toggle-left",Type = "Toggle", TabTitle = Tab.Title, SelectFn = SelectTab, Frame = Beeee, RightScroll = RightScroll,})
@@ -2483,6 +2523,14 @@ function Tab:Paragraph1(Config,type)
                 SizeY = Config.SizeY or 40,
             }
             local Beeee, SliderElement, Inner = Utility:Element(RightScroll, ElementFrame, Slider.SizeY, "Slider")
+            
+            Beeee.MouseEnter:Connect(function()
+                Utility:TweenObject(Beeee.UIScale, {Scale = 1.02}, 0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+            end)
+            Beeee.MouseLeave:Connect(function()
+                Utility:TweenObject(Beeee.UIScale, {Scale = 1}, 0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+            end)
+            
             local Title, Desc = Utility:ElText(Inner, Slider.Title, Slider.Desc, "Button")
 
             local TextContainer = _183goat:Create("Frame", {
@@ -2509,6 +2557,7 @@ function Tab:Paragraph1(Config,type)
                 BackgroundTransparency = 0.5,
                 Size = UDim2.new(0, 110, 0, 16),
                 BorderSizePixel = 0,
+                BackgroundColor3 = Color3.fromRGB(65, 30, 110), -- Placeholder Deep Purple
                 ZIndex = 15,
                 ThemeID = {
                     BackgroundColor3 = "Slider.Placeholder|Placeholder"
@@ -2545,9 +2594,10 @@ function Tab:Paragraph1(Config,type)
                 ClipsDescendants = true,
                 BackgroundTransparency = 0,
                 Size = UDim2.new(0, 0, 1, 0),
+                BackgroundColor3 = Color3.fromRGB(200, 50, 255), -- Active fill slider
                 ZIndex = 16,
                 ThemeID = {
-                    BackgroundColor3 = "Slider.SliderPart|Text"
+                    BackgroundColor3 = "Slider.SliderPart|Accent"
                 }
             }, {
 
@@ -2560,7 +2610,7 @@ function Tab:Paragraph1(Config,type)
                 Parent = SliderElement,
                 AnchorPoint = Vector2.new(0.96, 0.5),
                 Position = UDim2.new(0.96, 0, 0.5, 0),
-                BackgroundColor3 = Color3.fromRGB(20, 20, 20),
+                BackgroundColor3 = Color3.fromRGB(45, 20, 80), -- Rich slider box
                 BackgroundTransparency = 0.5,
                 Size = UDim2.new(0, 29, 0, 22),
                 ClipsDescendants = true,
@@ -2602,6 +2652,13 @@ function Tab:Paragraph1(Config,type)
                 TextTransparency = 1,
                 ZIndex = 25,
             })
+            
+            SliderTRG.MouseButton1Down:Connect(function()
+                Utility:TweenObject(DropValue, {BackgroundColor3 = Color3.fromRGB(230, 140, 255)}, 0.15)
+            end)
+            SliderTRG.MouseButton1Up:Connect(function()
+                Utility:TweenObject(DropValue, {BackgroundColor3 = Color3.fromRGB(200, 50, 255)}, 0.25)
+            end)
 
             local BGBox = _183goat:Create("TextBox", {
                 Parent = BGFrame,
@@ -2615,1554 +2672,4 @@ function Tab:Paragraph1(Config,type)
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 FontFace = Font.new([[rbxassetid://12187365364]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
                 TextSize = 10,
-                ThemeID = {
-                    TextColor3 = "Slider.Text|Text"
-                }
-            })
-
-            local ScrollFrame = _183goat:Create("Frame", {
-                Parent = DropValue,
-                AnchorPoint = Vector2.new(0, 1),
-                Position = UDim2.new(0, 0, -1.5, -5),
-                BackgroundTransparency = 1,
-                Size = UDim2.new(0, 35, 0, 20),
-                ClipsDescendants = true,
-                Visible = false,
-                ZIndex = 30,
-                ThemeID = {
-                    BackgroundColor3 = "Slider.Placeholder|Placeholder"
-                }
-            }, {
-                _183goat:Create("UICorner", {
-                    CornerRadius = UDim.new(0, 6),
-                }),
-                _183goat:Create("TextLabel", {
-                    BackgroundTransparency = 1,
-                    Size = UDim2.new(1, 0, 1, 0),
-                    TextColor3 = Color3.fromRGB(255, 255, 255),
-                    TextTransparency = 1,
-                    TextSize = 11,
-                    ZIndex = 31,
-                    FontFace = Font.new([[rbxassetid://12187365364]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
-                    ThemeID = {
-                        TextColor3 = "Slider.Text|Text"
-                    }
-                }),
-            })
-
-            function Slider:Lock()
-                Slider.Locked = true
-                LockedElm(Beeee,true)
-            end
-            function Slider:UnLock()
-                Slider.Locked = false
-                LockedElm(Beeee,false)
-            end
-            if Slider.Locked then
-                Slider:Lock()
-            end
-
-            local Value
-            local moveconnection
-            local releaseconnection
-            local isTouch = false
-            local isFocusing = false
-
-            BGBox.Focused:Connect(function()
-                isFocusing = true
-            end)
-
-            BGBox.FocusLost:Connect(function()
-                if Slider.Locked then return end
-                isFocusing = false
-                if tonumber(BGBox.Text) then
-                    local inputValue = tonumber(BGBox.Text)
-                    local clampedValue = math.clamp(inputValue, Slider.Value.Min, Slider.Value.Max)
-                    local roundedValue = math.round(clampedValue / Slider.Step) * Slider.Step
-                    Value = roundedValue
-                    BGBox.Text = tostring(Value)
-                    DropValue.Size = UDim2.new(
-                        (roundedValue - Slider.Value.Min) / (Slider.Value.Max - Slider.Value.Min),
-                        0, 1, 0
-                    )
-                    task.wait(Slider.Callback, roundedValue)
-                end
-            end)
-
-            local clampedDefault = math.clamp(Slider.Value.Default, Slider.Value.Min, Slider.Value.Max)
-            Value = clampedDefault
-            DropValue.Size = UDim2.new(
-                (clampedDefault - Slider.Value.Min) / (Slider.Value.Max - Slider.Value.Min),
-                0, 1, 0
-            )
-            BGBox.Text = tostring(clampedDefault)
-            task.spawn(Slider.Callback, clampedDefault)
-
-            SliderTRG.InputBegan:Connect(function(input)
-                if Slider.Locked then return end
-                if not isFocusing and not HoldingSlider and (
-                    input.UserInputType == Enum.UserInputType.MouseButton1 or
-                    input.UserInputType == Enum.UserInputType.Touch
-                ) then
-                    isTouch = (input.UserInputType == Enum.UserInputType.Touch)
-                    HoldingSlider = true
-
-                    ScrollFrame.Visible = true
-                    Utility:TweenObject(ScrollFrame, { BackgroundTransparency = 0.1 }, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-                    Utility:TweenObject(ScrollFrame:FindFirstChildOfClass("TextLabel"), { TextTransparency = 0 }, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-
-                    if moveconnection then moveconnection:Disconnect() end
-                    if releaseconnection then releaseconnection:Disconnect() end
-
-                    moveconnection = game:GetService("RunService").RenderStepped:Connect(function()
-                        local inputPosition
-                        if isTouch then
-                            inputPosition = input.Position.X
-                        else
-                            inputPosition = game:GetService("UserInputService"):GetMouseLocation().X
-                        end
-
-                        local delta = math.clamp(
-                            (inputPosition - ValueFrame.AbsolutePosition.X) / ValueFrame.AbsoluteSize.X,
-                            0, 1
-                        )
-                        Value = math.floor(
-                            (Slider.Value.Min + delta * (Slider.Value.Max - Slider.Value.Min)) / Slider.Step + 0.5
-                        ) * Slider.Step
-
-                        Utility:TweenObject(DropValue, { Size = UDim2.new(delta, 0, 1, 0) }, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-
-                        BGBox.Text = tostring(Value)
-                        ScrollFrame:FindFirstChildOfClass("TextLabel").Text = tostring(Value)
-                        ScrollFrame.Position = UDim2.new(delta, 0, -1.5, -5)
-
-                        task.spawn(Slider.Callback, Value)
-                    end)
-
-                    releaseconnection = game:GetService("UserInputService").InputEnded:Connect(function(endInput)
-                        if (
-                            endInput.UserInputType == Enum.UserInputType.MouseButton1 or
-                            endInput.UserInputType == Enum.UserInputType.Touch
-                        ) and input == endInput then
-                            if moveconnection then moveconnection:Disconnect() moveconnection = nil end
-                            if releaseconnection then releaseconnection:Disconnect() releaseconnection = nil end
-                            HoldingSlider = false
-
-                            Utility:TweenObject(ScrollFrame, { BackgroundTransparency = 1 }, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-                            Utility:TweenObject(ScrollFrame:FindFirstChildOfClass("TextLabel"), { TextTransparency = 1 }, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-                            task.wait(0.1)
-                            ScrollFrame.Visible = false
-                        end
-                    end)
-                end
-            end)
-
-            function Slider:SetValue(val)
-                local clamped = math.clamp(val, Slider.Value.Min, Slider.Value.Max)
-                local rounded = math.round(clamped / Slider.Step) * Slider.Step
-                Value = rounded
-                BGBox.Text = tostring(rounded)
-                Utility:TweenObject(DropValue, {Size = UDim2.new((rounded - Slider.Value.Min) / (Slider.Value.Max - Slider.Value.Min),0, 1, 0)}, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-                task.spawn(Slider.Callback, rounded)
-            end
-
-            function Slider:SetDesc(val)
-                Desc.Frame.Visible = true
-                Desc.SetText(val)
-            end
-
-            function Slider:Close()
-                Beeee:Destroy()
-            end
-            Utility:Search(Window, {Title = Slider.Title, Desc = Slider.Desc, Icon = "settings-2",Type = "Slider", TabTitle = Tab.Title, SelectFn = SelectTab, Frame = Beeee, RightScroll = RightScroll,})
-            return Slider
-        end
-        function Tab:Dropdown(Config)
-            local Dropdown = {
-                Title = Config.Title or "Dropdown",
-                Desc = Config.Desc,
-                Value = Config.Value or "",
-                Locked = Config.Locked or false,
-                Multi = Config.Multi or false,
-                Option = Config.Option or {},
-                Options = {},
-                Locked = Config.Locked,
-                Callback = Config.Callback or function() end,
-                ASpeed = 0.2
-            }
-
-            local DropDownElement = _183goat:Create("Frame", {
-                Parent = RightScroll,
-                BackgroundTransparency = 1,
-                BorderSizePixel = 0,
-                AutomaticSize = "Y",
-                Size = UDim2.new(0, ElementFrame.Size.X.Offset - 10, 0, 40),
-            }, {
-                _183goat:Create("UICorner", { CornerRadius = UDim.new(0, 10) }),
-                _183goat:Create("UIListLayout", {
-                    SortOrder = Enum.SortOrder.LayoutOrder,
-                    Padding = UDim.new(0, 0)
-                })
-            })
-
-            local DropFrame = _183goat:Create("Frame", {
-                Parent = DropDownElement,
-                BackgroundColor3 = Color3.fromRGB(43, 43, 43),
-                BackgroundTransparency = 0.5,
-                BorderSizePixel = 0,
-                Size = UDim2.new(1, 0, 0, 40),
-                ZIndex = 15,
-                ThemeID = {
-                    BackgroundColor3 = "Dropdown.Background|ElementColor"
-                }
-            }, {
-                _183goat:Create("UICorner", { CornerRadius = UDim.new(0, 12) }),
-                _183goat:Create("UIStroke", {
-                    Color = Color3.fromRGB(255, 255, 255),
-                    LineJoinMode = "Round",
-                    Thickness = 0.6,
-                    ThemeID = { Color = "Outline" }
-                }, {
-                    _183goat:Create("UIGradient", {
-                        Color = ColorSequence.new(Color3.fromRGB(255,255,255), Color3.fromRGB(255,255,255)),
-                        Transparency = NumberSequence.new({
-                            NumberSequenceKeypoint.new(0, 0.1),
-                            NumberSequenceKeypoint.new(0.5, 1),
-                            NumberSequenceKeypoint.new(1, 1)
-                        }),
-                        Rotation = -110
-                    })
-                }),
-                _183goat:Create("UIPadding", {
-                    PaddingTop = UDim.new(0,0),--5
-                    PaddingBottom = UDim.new(0,0)--5
-                }),
-                _183goat:Create("Frame", {
-                    BackgroundTransparency = 1,
-                    Size = UDim2.new(1, 0, 1, 0),
-                    ClipsDescendants = true,
-                    ZIndex = 16,
-                },{
-                    _183goat:Create("UIListLayout", {
-                        SortOrder = Enum.SortOrder.LayoutOrder,
-                        Padding = UDim.new(0, 1)
-                    }),
-                    _183goat:Create("UIPadding", {
-                        PaddingTop = UDim.new(0,9),
-                    })
-                })
-            })
-
-            local Title = Text(DropFrame.Frame, Dropdown.Title, {
-                Size = UDim2.new(1, 0, 1, 0),
-                AutomaticSize = "Y",
-                ZIndex = 16,
-                FontFace = Font.new([[rbxassetid://12187365364]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
-                TextSize = 13,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                RichText = true,
-                TextWrapped = true,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                ThemeID = {
-                    TextColor3 = "Dropdown.Text|Text"
-                }
-            }, {
-                _183goat:Create("UIPadding", {
-                    PaddingLeft = UDim.new(0, 10),
-                    PaddingTop = UDim.new(0,5)
-                }),
-            })
-
-            local Desc = Text(DropFrame, Dropdown.Desc, {
-                Size = UDim2.new(1, -130, 0, 0),
-                AutomaticSize = "Y",
-                Position = UDim2.new(0, 10, 0, 22),
-                ZIndex = 16,
-                FontFace = Font.new([[rbxassetid://12187365364]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
-                TextSize = 12,
-                TextTransparency = 0.7,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                RichText = true,
-                TextWrapped = true,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                ThemeID = {
-                    TextColor3 = "Dropdown.Text|Text"
-                }
-            }, {
-                _183goat:Create("UIPadding", {
-                    PaddingTop = UDim.new(0,5)
-                }),
-            })
-
-            local DropValueFrame = _183goat:Create("Frame", {
-                Parent = DropFrame,
-                AnchorPoint = Vector2.new(1, 0.5),
-                Position = UDim2.new(1, -10, 0.5, 0),
-                BackgroundColor3 = Color3.fromRGB(20, 20, 20),
-                BackgroundTransparency = 0.5,
-                Size = UDim2.new(0, 119, 0, 25),
-                ZIndex = 15,
-                ThemeID = {
-                    BackgroundColor3 = "Dropdown.Placeholder|Placeholder"
-                }
-            }, {
-                _183goat:Create("UICorner", { CornerRadius = UDim.new(0, 12) }),
-                _183goat:Create("UIStroke", {
-                    Color = Color3.fromRGB(255, 255, 255),
-                    Thickness = 0.6,
-                    ThemeID = { Color = "Outline" }
-                }, {
-                    _183goat:Create("UIGradient", {
-                        Color = ColorSequence.new(Color3.fromRGB(255,255,255), Color3.fromRGB(255,255,255)),
-                        Transparency = NumberSequence.new({
-                            NumberSequenceKeypoint.new(0, 0.1),
-                            NumberSequenceKeypoint.new(0.5, 1),
-                            NumberSequenceKeypoint.new(1, 1)
-                        }),
-                        Rotation = -110
-                    })
-                })
-            })
-
-            local DropIcon = _183goat:Create("ImageLabel", {
-                Parent = DropValueFrame,
-                AnchorPoint = Vector2.new(1, 0.5),
-                Position = UDim2.new(1, -4, 0.5, 0),
-                BackgroundTransparency = 1,
-                Size = UDim2.new(0, 17, 0, 17),
-                Image = IconsV2.GetIcon("chevron-down"),
-                ZIndex = 16,
-                ThemeID = {
-                    ImageColor3 = "Dropdown.IconColor|IconColor"
-                }
-            })
-
-            local DropOptionBox = _183goat:Create("TextBox", {
-                Parent = DropValueFrame,
-                BackgroundTransparency = 1,
-                Position = UDim2.new(0, 8, 0, 0),
-                Size = UDim2.new(1, -30, 1, 0),
-                Text = Dropdown.Value,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                FontFace = Font.new([[rbxassetid://12187365364]], Enum.FontWeight.SemiBold),
-                TextSize = 10,
-                ClipsDescendants = true,
-                ZIndex = 100,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                ThemeID = {
-                    TextColor3 = "Dropdown.Text|Text"
-                }
-            })
-
-            local DropDownTRG = _183goat:Create("TextButton", {
-                Parent = DropFrame,
-                BackgroundTransparency = 1,
-                Size = UDim2.new(1, 0, 1, 0),
-                Text = "",
-                ZIndex = 25,
-            })
-
-            local DropElementFrame = _183goat:Create("Frame", {
-                Parent = DropDownElement,
-                BackgroundTransparency = 1,
-                ClipsDescendants = true,
-                Size = UDim2.new(1, 0, 0, 0),
-                ZIndex = 15,
-            })
-
-            local ScrollingFrame = _183goat:Create("ScrollingFrame", {
-                Parent = DropElementFrame,
-                BackgroundTransparency = 1,
-                Size = UDim2.new(1, 0, 1, 0),
-                AutomaticCanvasSize = "Y",
-                ScrollingDirection = "Y",
-                CanvasSize = UDim2.new(0, 0, 0, 0),
-                ScrollBarThickness = 2,
-                ZIndex = 15,
-            }, {
-                _183goat:Create("UIPadding", {
-                    PaddingTop = UDim.new(0, 0),
-                    PaddingBottom = UDim.new(0, 0),
-                    PaddingLeft = UDim.new(0, 2),
-                    PaddingRight = UDim.new(0, 2),
-                })
-            })
-
-            local ListLayout = _183goat:Create("UIListLayout", {
-                Parent = ScrollingFrame,
-                SortOrder = Enum.SortOrder.LayoutOrder,
-                Padding = UDim.new(0, 5),
-            })
-
-            local DropOpen = false
-            local isUserTyping = false
-
-            DropOptionBox.Focused:Connect(function()
-                if Dropdown.Locked then return end
-                isUserTyping = true
-            end)
-
-            DropOptionBox.FocusLost:Connect(function()
-                if Dropdown.Locked then return end
-                isUserTyping = false
-            end)
-
-            local function openDropdown()
-                DropOpen = true
-                task.defer(function()
-                    local contentH = ListLayout.AbsoluteContentSize.Y
-                    if contentH == 0 then contentH = #Dropdown.Option * 30 end
-                    local totalH = math.min(contentH + 12, 200)
-
-                    Utility:TweenObject(DropElementFrame, {Size = UDim2.new(1, 0, 0, totalH)}, Dropdown.ASpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
-                    Utility:TweenObject(ScrollingFrame.UIPadding, {PaddingTop = UDim.new(0, 6), PaddingBottom = UDim.new(0, 6)}, Dropdown.ASpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
-                    Utility:TweenObject(DropIcon, {Rotation = 180}, 0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
-                end)
-            end
-
-            DropOptionBox:GetPropertyChangedSignal("Text"):Connect(function()
-                local query = DropOptionBox.Text
-                if not isUserTyping or query == "" then
-                    for _, v in next, ScrollingFrame:GetChildren() do
-                        if v:IsA("Frame") then v.Visible = true end
-                    end
-                    return
-                end
-                local lower = string.lower(query)
-                for _, v in next, ScrollingFrame:GetChildren() do
-                    if v:IsA("Frame") then
-                        local btn = v:FindFirstChildOfClass("TextButton")
-                        openDropdown()
-                        v.Visible = btn and string.lower(btn.Text):find(lower) ~= nil
-                    end
-                end
-                task.defer(function()
-                    local contentH = ListLayout.AbsoluteContentSize.Y
-                    ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, contentH)
-
-                    if DropOpen then
-                        local totalH = math.min(contentH + 12, 149)
-                        DropElementFrame.Size = UDim2.new(1, 0, 0, totalH)
-                    end
-                end)
-            end)
-
-            local function closeDropdown()
-                DropOpen = false
-                Utility:TweenObject(DropElementFrame, {Size = UDim2.new(1, 0, 0, 0)}, Dropdown.ASpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
-                Utility:TweenObject(ScrollingFrame.UIPadding, {PaddingTop = UDim.new(0, 0), PaddingBottom = UDim.new(0, 0)}, Dropdown.ASpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
-                Utility:TweenObject(DropIcon, {Rotation = 0}, 0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
-            end
-
-            function Dropdown:Lock()
-                Dropdown.Locked = true
-                LockedElm(DropFrame,true)
-                closeDropdown()
-            end
-            function Dropdown:UnLock()
-                Dropdown.Locked = false
-                LockedElm(DropFrame,false)
-            end
-            if Dropdown.Locked then
-                Dropdown:Lock()
-            end
-
-            DropDownTRG.MouseButton1Click:Connect(function()
-                if Dropdown.Locked then return end
-                if DropOpen then
-                    closeDropdown()
-                else
-                    openDropdown()
-                end
-            end)
-
-            function Dropdown:Refresh(options)
-                Dropdown.Option = options or Dropdown.Option
-
-                for _, v in next, ScrollingFrame:GetChildren() do
-                    if v:IsA("Frame") then v:Destroy() end
-                end
-
-                local Items = {}
-
-                for _, Item in ipairs(Dropdown.Option) do
-                    local DropElement = _183goat:Create("Frame", {
-                        Parent = ScrollingFrame,
-                        Name = Item,
-                        BackgroundColor3 = Color3.fromRGB(43, 43, 43),
-                        BackgroundTransparency = 0.5,
-                        BorderSizePixel = 0,
-                        Size = UDim2.new(1, -4, 0, 24),
-                        ZIndex = 16,
-                        ThemeID = {
-                            BackgroundColor3 = "Dropdown.Background|ElementColor"
-                        }
-                    }, {
-                        _183goat:Create("UICorner", { CornerRadius = UDim.new(0, 12) }),
-                        _183goat:Create("UIStroke", {
-                            Color = Color3.fromRGB(255, 255, 255),
-                            Thickness = 0.6,
-                            ThemeID = { Color = "Outline" }
-                        }, {
-                            _183goat:Create("UIGradient", {
-                                Color = ColorSequence.new(Color3.fromRGB(255,255,255), Color3.fromRGB(255,255,255)),
-                                Transparency = NumberSequence.new({
-                                    NumberSequenceKeypoint.new(0, 0.1),
-                                    NumberSequenceKeypoint.new(0.5, 1),
-                                    NumberSequenceKeypoint.new(1, 1)
-                                }),
-                                Rotation = -110
-                            })
-                        })
-                    })
-
-                    local DropElementTRG = _183goat:Create("TextButton", {
-                        Parent = DropElement,
-                        BackgroundTransparency = 1,
-                        Size = UDim2.new(1, 0, 1, 0),
-                        Text = Item,
-                        TextColor3 = Color3.fromRGB(255, 255, 255),
-                        TextTransparency = 0.4,
-                        FontFace = Font.new([[rbxassetid://12187365364]], Enum.FontWeight.SemiBold),
-                        TextSize = 11,
-                        ZIndex = 17,
-                        ThemeID = {
-                            TextColor3 = "Dropdown.Text|Text"
-                        }
-                    }, {
-                        _183goat:Create("UIPadding", { PaddingLeft = UDim.new(0, 8) })
-                    })
-
-                    local itemEntry = { DropElement = DropElement, Selected = false }
-                    Items[#Items + 1] = itemEntry
-
-                    DropElementTRG.MouseButton1Click:Connect(function()
-                        if Dropdown.Locked then return end
-                        if not Dropdown.Multi then
-                            for _, entry in pairs(Items) do
-                                entry.Selected = false
-                                Utility:TweenObject(entry.DropElement, {BackgroundTransparency = 0.5}, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-                                local btn = entry.DropElement:FindFirstChildOfClass("TextButton")
-                                if btn then
-                                    Utility:TweenObject(btn, {TextTransparency = 0.4}, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-                                end
-                            end
-
-                            itemEntry.Selected = true
-                            Utility:TweenObject(DropElement, {BackgroundTransparency = 0}, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-                            Utility:TweenObject(DropElementTRG, {TextTransparency = 0}, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-
-                            Dropdown.Value = Item
-                            DropOptionBox.Text = Item
-
-                            closeDropdown()
-                            task.spawn(Dropdown.Callback, Item)
-                        else
-                            itemEntry.Selected = not itemEntry.Selected
-
-                            if itemEntry.Selected then
-                                table.insert(Dropdown.Options, Item)
-                                Utility:TweenObject(DropElement, {BackgroundTransparency = 0}, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-                                Utility:TweenObject(DropElementTRG, {TextTransparency = 0}, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-                            else
-                                for i = #Dropdown.Options, 1, -1 do
-                                    if Dropdown.Options[i] == Item then
-                                        table.remove(Dropdown.Options, i)
-                                        break
-                                    end
-                                end
-                                Utility:TweenObject(DropElement, {BackgroundTransparency = 0.5}, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-                                Utility:TweenObject(DropElementTRG, {TextTransparency = 0.4}, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-                            end
-
-                            DropOptionBox.Text = table.concat(Dropdown.Options, ", ")
-                            task.spawn(Dropdown.Callback, Dropdown.Options)
-                        end
-                    end)
-                end
-
-                task.defer(function()
-                    ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, ListLayout.AbsoluteContentSize.Y)
-                end)
-
-                return Dropdown, Items
-            end
-
-            function Dropdown:Close()
-                DropDownElement:Destroy()
-            end
-
-            function Dropdown:SetTitle(Value)
-                Title.Text = Value
-            end
-
-            function Dropdown:SetDesc(Text)
-                Desc.Visible = true
-                Desc.SetText(Text)
-            end
-
-            if Dropdown.Desc then
-                Dropdown:SetDesc(Dropdown.Desc)
-            end
-
-            function Dropdown:SetValue(Value)
-                DropOptionBox.Text = Value
-                Dropdown.Value = Value
-            end
-
-            Dropdown:Refresh(Dropdown.Option)
-            Utility:Search(Window, {Title = Dropdown.Title, Desc = Dropdown.Desc, Icon = "list",Type = "Dropdown", TabTitle = Tab.Title, SelectFn = SelectTab, Frame = DropDownElement, RightScroll = RightScroll,})
-            return Dropdown
-        end
-
-        function Tab:Input(Config)
-            local Input = {
-                Title = Config.Title or "Input",
-                Desc = Config.Desc or nil,
-                Value = Config.Value or "",
-                Locked = Config.Locked or false,
-                MaxSymbols = Config.MaxSymbols or nil,
-                Callback = Config.Callback or function() end,
-                SizeY = 40
-            }
-            local Beeee, InputElement, Inner = Utility:Element(RightScroll, ElementFrame, Input.SizeY, "Input")
-            local Title, Desc = Utility:ElText(Inner, Input.Title, Input.Desc, "Button")
-            
-            local InputFrame = _183goat:Create("Frame", {
-                Parent = InputElement,
-                AnchorPoint = Vector2.new(1, 0.5),
-                Position = UDim2.new(1, -10, 0.5, 0),
-                BackgroundColor3 = Color3.fromRGB(20, 20, 20),
-                BackgroundTransparency = 0.5,
-                BorderSizePixel = 0,
-                Size = UDim2.new(0, Input.MaxSymbols and 130 or 130, 0, 25),
-                ZIndex = 15,
-                ThemeID = { BackgroundColor3 = "Input.Placeholder|Placeholder" }
-            }, {
-                _183goat:Create("UICorner", { CornerRadius = UDim.new(0, 12) }),
-                _183goat:Create("UIStroke", {
-                    Color = Color3.fromRGB(255, 255, 255),
-                    Thickness = 0.6,
-                    ThemeID = { Color = "Outline" }
-                }, {
-                    _183goat:Create("UIGradient", {
-                        Color = ColorSequence.new(Color3.fromRGB(255,255,255), Color3.fromRGB(255,255,255)),
-                        Transparency = NumberSequence.new({
-                            NumberSequenceKeypoint.new(0, 0.1),
-                            NumberSequenceKeypoint.new(0.5, 1),
-                            NumberSequenceKeypoint.new(1, 1)
-                        }),
-                        Rotation = -110
-                    })
-                })
-            })
-
-            local InputBox = _183goat:Create("TextBox", {
-                Parent = InputFrame,
-                BackgroundTransparency = 1,
-                ClearTextOnFocus = false,
-                ClipsDescendants = true,
-                Position = UDim2.new(0, 0, 0, 0),
-                Size = UDim2.new(1, Input.MaxSymbols and -36 or -8, 1, 0),
-                Text = Input.Value,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                FontFace = Font.new([[rbxassetid://12187365364]], Enum.FontWeight.SemiBold),
-                TextSize = 10,
-                ZIndex = 16,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                ThemeID = { TextColor3 = "Text" }
-            }, {
-                _183goat:Create("UIPadding", {
-                    PaddingLeft = UDim.new(0, 8),
-                    PaddingRight = UDim.new(0, 4)
-                })
-            })
-
-            local MaxLabel
-            if Input.MaxSymbols then
-                MaxLabel = _183goat:Create("TextLabel", {
-                    Parent = InputFrame,
-                    AnchorPoint = Vector2.new(1, 0.5),
-                    Position = UDim2.new(1, -6, 0.5, 0),
-                    BackgroundTransparency = 1,
-                    Size = UDim2.new(0, 30, 0, 17),
-                    Text = "0/" .. Input.MaxSymbols,
-                    TextColor3 = Color3.fromRGB(255, 255, 255),
-                    TextTransparency = 0.5,
-                    FontFace = Font.new([[rbxassetid://12187365364]], Enum.FontWeight.SemiBold),
-                    TextSize = 9,
-                    ZIndex = 16,
-                    ThemeID = { TextColor3 = "Text" }
-                })
-
-                InputBox.Changed:Connect(function(prop)
-                    if prop == "Text" then
-                        if #InputBox.Text > Input.MaxSymbols then
-                            InputBox.Text = string.sub(InputBox.Text, 1, Input.MaxSymbols)
-                        end
-                        MaxLabel.Text = #InputBox.Text .. "/" .. Input.MaxSymbols
-                    end
-                end)
-            end
-
-            function Input:Lock()
-                Input.Locked = true
-                LockedElm(Beeee,true)
-            end
-            function Input:UnLock()
-                Input.Locked = false
-                LockedElm(Beeee,false)
-            end
-
-            function Input:SetDesc(Value)
-                Desc.Visible = true
-                Desc.Text = Value
-            end
-
-            if Input.Desc then Input:SetDesc(Input.Desc) end
-
-            local function fireCallback()
-                local val = Input.MaxSymbols
-                    and string.sub(InputBox.Text, 1, Input.MaxSymbols)
-                    or InputBox.Text
-                task.spawn(Input.Callback, val)
-            end
-
-            if Input.Locked then
-                Input:Lock()
-            else
-                fireCallback()
-            end
-
-            InputBox.FocusLost:Connect(function(enterPressed)
-                if Input.Locked then return end
-                if not enterPressed then return end
-                fireCallback()
-            end)
-
-            function Input:SetValue(Val)
-                InputBox.Text = Val
-                task.spawn(Input.Callback, Val)
-            end
-
-            function Input:SetTitle(Value)
-                TitleLabel.Text = Value
-            end
-
-            if Input.Desc then
-                Input:SetDesc(Input.Desc)
-            end
-
-            function Input:SetMaxSymbols(number)
-                Input.MaxSymbols = number
-                InputBox.MaxVisibleGraphemes = number
-                if MaxLabel then
-                    MaxLabel.Text = #InputBox.Text .. "/" .. number
-                end
-            end
-
-            function Input:Close()
-                InputElement:Destroy()
-            end
-            Utility:Search(Window, {Title = Input.Title, Desc = Input.Desc, Icon = "text-cursor-input",Type = "Input", TabTitle = Tab.Title, SelectFn = SelectTab, Frame = Beeee, RightScroll = RightScroll,})
-            return Input
-        end
-        function Tab:Keybind(Config)
-            local Keybind = {
-                Title = Config.Title or "Keybind",
-                Desc = Config.Desc or nil,
-                Value = Config.Value or "F",
-                Locked = Config.Locked,
-                Callback = Config.Callback or function() end,
-                SizeY = 40
-            }
-            local Beeee, KeybindElement, Inner = Utility:Element(RightScroll, ElementFrame, Keybind.SizeY, "Keybind")
-            local Title, Desc = Utility:ElText(Inner, Keybind.Title, Keybind.Desc, "Keybind")
-
-            local KeyFrame = _183goat:Create("TextButton", {
-                Parent = KeybindElement,
-                AnchorPoint = Vector2.new(1, 0.5),
-                Position = UDim2.new(1, -10, 0.5, 0),
-                BackgroundColor3 = Color3.fromRGB(20, 20, 20),
-                BackgroundTransparency = 0,
-                BorderSizePixel = 0,
-                Size = UDim2.new(0, 28, 0, 20),
-                TextTransparency = 0,
-                ZIndex = 17,
-                FontFace = Font.new([[rbxassetid://12187365364]], Enum.FontWeight.SemiBold),
-                Text = Keybind.Value,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                TextSize = 11,
-                ThemeID = {
-                    BackgroundColor3 = "Keybind.Placeholder|Placeholder",
-                    TextColor3 = "Keybind.Text|Text"
-                }
-            }, {
-                _183goat:Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
-                _183goat:Create("UIStroke", {
-                    Color = Color3.fromRGB(255, 255, 255),
-                    Thickness = 0.6,
-                    ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-                    ThemeID = { Color = "Outline" }
-                }, {
-                    _183goat:Create("UIGradient", {
-                        Color = ColorSequence.new(Color3.fromRGB(255,255,255), Color3.fromRGB(255,255,255)),
-                        Transparency = NumberSequence.new({
-                            NumberSequenceKeypoint.new(0, 0.1),
-                            NumberSequenceKeypoint.new(0.5, 1),
-                            NumberSequenceKeypoint.new(1, 1)
-                        }),
-                        Rotation = -110
-                    })
-                })
-            })
-            local listening = false
-
-            function Keybind:Lock()
-                Keybind.Locked = true
-                LockedElm(Beeee,true)
-            end
-            function Keybind:UnLock()
-                Keybind.Locked = false
-                LockedElm(Beeee,false)
-            end
-            if Keybind.Locked then
-                Keybind:Lock()
-            end
-
-            KeyFrame.MouseButton1Click:Connect(function()
-                if Keybind.Locked then return end
-                if listening then return end
-                listening = true
-                KeyFrame.Text = "..."
-
-                local conn
-                conn = game:GetService("UserInputService").InputBegan:Connect(function(input)
-                    if input.KeyCode ~= Enum.KeyCode.Unknown then
-                        conn:Disconnect()
-                        listening = false
-                        local keyName = input.KeyCode.Name
-                        KeyFrame.Text = keyName
-                        Keybind.Value = keyName
-                        task.spawn(Keybind.Callback, keyName)
-                    end
-                end)
-            end)
-
-            function Keybind:SetDesc(Value)
-                Desc.Visible = true
-                Desc.Text = Value
-            end
-
-            if Keybind.Desc then Keybind:SetDesc(Keybind.Desc) end
-
-            function Keybind:SetValue(Val)
-                KeyFrame.Text = Val
-                Keybind.Value = Val
-                task.spawn(Keybind.Callback, Val)
-            end
-
-            function Keybind:SetTitle(Value)
-                Title.Text = Value
-            end
-
-            function Keybind:Close()
-                Beeee:Destroy()
-            end
-
-            task.spawn(Keybind.Callback, Keybind.Value)
-            Utility:Search(Window, {Title = Keybind.Title, Desc = Keybind.Desc, Icon = "keyboard",Type = "Keybind", TabTitle = Tab.Title, SelectFn = SelectTab, Frame = Beeee, RightScroll = RightScroll,})
-            return Keybind
-        end
-        function Tab:Devider()
-            local Devider = _183goat:Create("Frame", {
-                Parent = RightScroll,
-                ZIndex = 20,
-                Size = UDim2.new(1, -7, 0, 1),
-                ThemeID = {
-                    BackgroundColor3 = "Outline"
-                },
-            },{
-                _183goat:Create("UICorner", { CornerRadius = UDim.new(0, 100) }),
-            })
-        end
-        function Tab:Space(Value)
-            local Space = _183goat:Create("Frame", {
-                Parent = RightScroll,
-                ZIndex = 20,
-                BackgroundTransparency = 1,
-                Size = UDim2.new(1, -7, 0, Value or 2),
-            })
-        end
-        function Tab:Section(Config)
-            local Section = {
-                Title = Config.Title or "Section",
-                Icon = Config.Icon,
-                TextSize = Config.TextSize or 18,
-                UIPadding = Config.UIPadding or UDim.new(0, 0),
-            }
-            local SectionElement = _183goat:Create("Frame", {
-                Parent = RightScroll,
-                BackgroundColor3 = Color3.new(1, 1, 1),
-                BackgroundTransparency = 1,
-                BorderColor3 = Color3.new(0, 0, 0),
-                ZIndex = 20,
-                Position = UDim2.new(0, 0, 0.3038, 0),
-                Size = UDim2.new(0, ElementFrame.Size.X.Offset - 10, 0, 30),
-            })
-
-            local SectionLabel = _183goat:Create("TextLabel", {
-                Parent = SectionElement,
-                BackgroundTransparency = 1,
-                RichText = true,
-                Position = UDim2.new(0, 0, 0, 0),
-                Size = UDim2.new(1, 0, 1, 0),
-                FontFace = Font.new([[rbxassetid://12187365364]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
-                Text = Section.Title,
-                TextSize = Section.TextSize,
-                ZIndex = 20,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                ThemeID = {
-                    TextColor3 = "Section.Text|Text"
-                },
-            },{
-                _183goat:Create("UIPadding", {
-                    PaddingLeft = UDim.new(0, 0),
-                })
-            })
-
-            local Icon
-            if Section.Icon then
-            SectionLabel.UIPadding.PaddingLeft = Section.UIPadding + UDim.new(0, 22)
-                local Icon = _183goat:Create("ImageLabel", {
-                    AnchorPoint = Vector2.new(0, 0.5),
-                    --Image = IconsV2.GetIcon(Window.Icon),
-                    BackgroundTransparency = 1,
-                    Position = UDim2.new(0, 0, 0.5, 0),
-                    Size = UDim2.new(0, 20, 0, 20),
-                    ZIndex = 20,
-                    Parent = SectionElement,
-                    ThemeID = {
-                        ImageColor3 = "Section.Icon|IconColor"
-                    }
-                })
-                if Section.Icon and IconsV2.Icon(Section.Icon) then
-                    Icon.Image = IconsV2.GetIcon(Section.Icon)
-                elseif Section.Icon and string.find(Section.Icon, "rbxassetid://") then
-                    Icon.Image = SectionIcon
-                end
-            end
-
-            function Section:Close()
-                SectionElement:Destroy()
-            end
-
-            function Section:SetTitle(Value)
-                SectionLabel.Text = Value
-            end
-            function Section:SetTextSize(V)
-                SectionLabel.TextSize = V
-            end
-            return Section
-        end
-        function Window:UserEnabled(Value)
-            Utility:TweenObject(UserFrame, {BackgroundTransparency = Value and 0 or 1}, 0.2)
-            Utility:TweenObject(UserTitle, {TextTransparency = Value and 0 or 1}, 0.2)
-            Utility:TweenObject(UserSub, {TextTransparency = Value and 0.6 or 1}, 0.2)
-            Utility:TweenObject(UserFrame.ImageLabel, {ImageTransparency = Value and 0 or 1,BackgroundTransparency = Value and 0 or 1}, 0.2)
-            UserFrame.Visible = Value
-            LeftScroll.Size = UDim2.new(0, Window.SideBarWidth, 1, Value and -50 or 0)
-        end
-        function Window:Anonymous(Value)
-            UserTitle.Text = Value and "Anonymous" or game.Players.LocalPlayer.DisplayName
-            UserSub.Text = Value and "@Anonymous" or "@"..game.Players.LocalPlayer.Name
-            UserFrame.ImageLabel.Image = (function()
-                return game:GetService("Players"):GetUserThumbnailAsync(Value and 1 or game.Players.LocalPlayer.UserId,Enum.ThumbnailType.HeadShot,Enum.ThumbnailSize.Size150x150)
-            end)()
-        end
-        function Tab:Group(Config)
-            Config = Config or {}
-            local Padding = Config.Padding or 5
-
-            local GroupFrame = _183goat:Create("Frame", {
-                Parent = RightScroll,
-                BackgroundTransparency = 1,
-                AutomaticSize = "Y",
-                Size = UDim2.new(0, ElementFrame.Size.X.Offset - 10, 0, 0),
-                ZIndex = 15,
-            }, {
-                _183goat:Create("UIListLayout", {
-                    FillDirection = Enum.FillDirection.Horizontal,
-                    HorizontalAlignment = Enum.HorizontalAlignment.Left,
-                    VerticalAlignment = Enum.VerticalAlignment.Top,
-                    SortOrder = Enum.SortOrder.LayoutOrder,
-                    Padding = UDim.new(0, Padding),
-                })
-            })
-
-            local CellScale, CellOffset
-
-            local function Size()
-                local count = 0
-                for _, child in ipairs(GroupFrame:GetChildren()) do
-                    if child:IsA("Frame") then
-                        count += 1
-                    end
-                end
-                CellScale = 1 / math.max(1, count)
-                CellOffset = -(Padding * (math.max(1, count) - 1) / math.max(1, count))
-                for _, child in ipairs(GroupFrame:GetChildren()) do
-                    if child:IsA("Frame") then
-                        child.Size = UDim2.new(CellScale, CellOffset, 0, child.Size.Y.Offset)
-                    end
-                end
-            end
-
-            local Group = {}
-
-            setmetatable(Group, {
-                __index = function(_, methodName)
-                    return function(_, ItemConfig)
-                        local Element = Tab[methodName](Tab, ItemConfig)
-                        Window.SearchIndex[#Window.SearchIndex].Frame.Parent = GroupFrame
-                        Size()
-                        return Element
-                    end
-                end
-            })
-
-            return Group
-        end
-
-        return Tab
-    end
-
-    function Window:Section(Config)
-        local Section = {
-            Title = Config.Title or "Section",
-            Icon = Config.Icon or nil,
-            Opened = Config.Opened or true,
-        }
-
-        local isOpen = Section.Opened
-
-        local SectionFrame = _183goat:Create("Frame", {
-            Parent = LeftScroll,
-            AutomaticSize = "Y",
-            BackgroundTransparency = 1,
-            Size = UDim2.new(0, Window.SideBarWidth - 5, 0, 0),
-            BorderSizePixel = 0,
-            ZIndex = 5,
-        }, {
-            _183goat:Create("UIListLayout", {
-                SortOrder = Enum.SortOrder.LayoutOrder,
-                Padding = UDim.new(0, 5),
-            }),
-        })
-
-        local SectionBTN = _183goat:Create("TextButton", {
-            Parent = SectionFrame,
-            Size = UDim2.new(1, 0, 0, 25),
-            BackgroundTransparency = 1,
-            TextTransparency = 1,
-            ZIndex = 50,
-        },{
-            _183goat:Create("UIPadding", {
-                PaddingTop = UDim.new(0, 9),
-            }),
-            _183goat:Create("ImageLabel", {
-                AnchorPoint = Vector2.new(1, 0.5),
-                Position = UDim2.new(1, -10, 0.5, 0),
-                BackgroundTransparency = 1,
-                Size = UDim2.new(0, 12, 0, 12),
-                Image = IconsV2.GetIcon("chevron-down"),
-                Rotation = isOpen and -180 or 0,
-                ZIndex = 16,
-                ThemeID = { ImageColor3 = "Text" }
-            })
-        })
-
-        --[[SectionBTN.MouseButton1Click:Connect(function()
-            isOpen = not isOpen
-            --SectionRoll.Visible = isOpen
-            Utility:TweenObject(SectionBTN.ImageLabel, {Rotation = isOpen and 0 or -180}, 0.16, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
-        end)--]]
-
-        local SecTitle = Text(SectionBTN, Section.Title, {
-            Size = UDim2.new(1, 0, 1, 0),
-            AutomaticSize = "Y",
-            ZIndex = 16,
-            FontFace = Font.new([[rbxassetid://12187365364]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
-            TextSize = 14,
-            TextColor3 = Color3.fromRGB(255, 255, 255),
-            RichText = true,
-            TextWrapped = true,
-            TextXAlignment = Enum.TextXAlignment.Left,
-            ZIndex = 49,
-            ThemeID = { TextColor3 = "Text" }
-        }, {
-            _183goat:Create("UIPadding", { PaddingLeft = UDim.new(0, 12) })
-        })
-        SecTitle.Position = UDim2.new(0, 0, 0, 0)
-
-        local Icon
-        if Section.Icon then
-            Icon = _183goat:Create("ImageLabel", {
-                AnchorPoint = Vector2.new(.02, 0.5),
-                --Image = IconsV2.GetIcon(Window.Icon),
-                BackgroundTransparency = 1,
-                Position = UDim2.new(.02, 0, 0.5, 0),
-                BorderColor3 = Color3.new(0, 0, 0),
-                Size = UDim2.new(0, 15, 0, 15),
-                BorderSizePixel = 0,
-                ZIndex = 49,
-                Parent = SectionBTN,
-                ThemeID = {
-                    ImageColor3 = "IconColor"
-                }
-            })
-            SecTitle.UIPadding.PaddingLeft = UDim.new(0,20)
-            if Section.Icon and IconsV2.Icon(Section.Icon) then
-                Icon.Image = IconsV2.GetIcon(Section.Icon)
-            elseif Section.Icon and string.find(Section.Icon, "rbxassetid://") then
-                Icon.Image = Section.Icon
-            end
-        end
-
-        local SectionRoll = _183goat:Create("Frame", {
-            Parent = SectionFrame,
-            AutomaticSize = "Y",
-            ClipsDescendants = true,
-            BackgroundTransparency = 1,
-            Size = UDim2.new(0, Window.SideBarWidth, 0, 0),
-            BorderSizePixel = 0,
-            ZIndex = 5,
-        }, {
-            _183goat:Create("UIListLayout", {
-                SortOrder = Enum.SortOrder.LayoutOrder,
-                Padding = UDim.new(0, 5),
-            }),
-        })
-
-        SectionBTN.MouseButton1Click:Connect(function()
-            isOpen = not isOpen
-            Utility:TweenObject(SectionBTN.ImageLabel, {Rotation = isOpen and -180 or 0}, 0.16)
-            SectionRoll.Size = UDim2.new(1, 0, 0, SectionRoll.AbsoluteSize.Y)
-            SectionRoll.AutomaticSize = Enum.AutomaticSize.None
-            if isOpen then
-                Utility:TweenObject(SectionRoll, {Size = UDim2.new(1, 0, 0, SectionRoll.UIListLayout.AbsoluteContentSize.Y)}, 0.2)
-            else
-                Utility:TweenObject(SectionRoll, {Size = UDim2.new(1, 0, 0, 0)}, 0.2)
-            end
-        end)
-
-        function Section:Tab(Config)
-            return Window:Tab(Config, SectionRoll.UIListLayout and SectionRoll or SectionRoll)
-        end
-        return Section
-    end
-
-
-   
-    function Window:OnDestroy(Callback)
-        Window.OnDestroy = Callback or function() end
-    end
-    WinElements.Cross.MouseButton1Click:connect(function()
-        Window.IslandOpen = false
-        spawn(function() pcall(Window.OnDestroy) end)
-        Utility:TweenObject(TabFrame, {Size = UDim2.new(0, Window.SideBarWidth, 0, 0)}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-        Utility:TweenObject(TabFrame, {BackgroundTransparency = 1}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-        Utility:TweenObject(TabFrame.Frame, {BackgroundTransparency = 1}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-        Utility:TweenObject(LeftScroll, {Size = UDim2.new(1, 0, 0, 0)}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-        Utility:TweenObject(Main.Frame, {Size = UDim2.new(0, Window.Size.X.Offset, 0, 0)}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out) --0, Window.Size.X.Offset, 0, Window.Size.Y.Offset-8
-        Main.Frame.Visible = false
-        Utility:TweenObject(Main, {Size = UDim2.new(0, Window.Size.X.Offset, 0, 0)}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out) --UDim2.new(0, Window.Size.X.Offset, 0, Window.Size.Y.Offset)
-        Utility:TweenObject(Main, {BackgroundTransparency = 1}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-        task.wait(0.3)
-        UIScreen:Destroy()
-    end)
-
-    function Window:Destroy()
-        Window.IslandOpen = false
-        Utility:TweenObject(TabFrame, {Size = UDim2.new(0, Window.SideBarWidth, 0, 0)}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-        Utility:TweenObject(TabFrame, {BackgroundTransparency = 1}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-        Utility:TweenObject(TabFrame.Frame, {BackgroundTransparency = 1}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-        Utility:TweenObject(LeftScroll, {Size = UDim2.new(1, 0, 0, 0)}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-        Utility:TweenObject(Main.Frame, {Size = UDim2.new(0, Window.Size.X.Offset, 0, 0)}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out) --0, Window.Size.X.Offset, 0, Window.Size.Y.Offset-8
-        Main.Frame.Visible = false
-        Utility:TweenObject(Main, {Size = UDim2.new(0, Window.Size.X.Offset, 0, 0)}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out) --UDim2.new(0, Window.Size.X.Offset, 0, Window.Size.Y.Offset)
-        Utility:TweenObject(Main, {BackgroundTransparency = 1}, 0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-        task.wait(0.3)
-        UIScreen:Destroy()
-    end
-
-    local TogValue = true
-    game:GetService("UserInputService").InputBegan:Connect(function(input, i)
-        if not i then
-            if input.KeyCode == Window.ToggleKey then
-                if not Window.IslandOpen then
-                else
-                end
-            end
-        end
-    end)
-
-    function Window:SetToggleKey(Value)
-        Window.ToggleKey = Value
-        return Window
-    end
-
-    function Window:SetTitle(v)
-        LibName.Text = v
-    end
-
-    function Window:SetAuthor(v)
-        LibName.LibAuthor = v
-    end
-
-    function Window:ToCenter()
-        Utility:TweenObject(Main, {Position = UDim2.new(0.5,0,0.5,0)}, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-    end
-
-    function Window:SetTransparency(Value)
-        Utility:TweenObject(Main, {Transparency = Value and 0.1 or 0}, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-        Utility:TweenObject(TabFrame, {Transparency = Value and 1 or 0}, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-        Utility:TweenObject(TabFrame.Frame, {Transparency = Value and 1 or 0}, 0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-        return Window
-    end
-
-    function Window:GetTheme()
-        return Window.Theme
-    end
-
-	function Window:GetUIScale()
-		return Window.Size
-	end
-
-    function Window:SetUIScale(v)
-        Utility:TweenObject(Main.UIScale, {Scale = v}, 0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
-        return Window
-    end
-
-    if Window.AutoScale then
-        local Camera = workspace.CurrentCamera
-
-        local AvailableWidth = Camera.ViewportSize.X - (40 * 2)
-        local AvailableHeight = Camera.ViewportSize.Y - (40 * 2)
-
-        local ScaleX = AvailableWidth / Window.Size.X.Offset
-        local ScaleY = AvailableHeight / Window.Size.Y.Offset
-
-        local MinScale = 0.3
-        local MaxScale = 1.0
-
-        Window:SetUIScale(math.clamp(math.min(ScaleX, ScaleY), MinScale, MaxScale))
-    end
-
-    function Window:Resize(sizeX, sizeY)
-        sizeX = math.clamp(sizeX, 410, 900)
-        sizeY = math.clamp(sizeY, 280, 700)
-        local TagFrame = Main:FindFirstChild("TagFrame")
-        Window.Size = UDim2.new(0, sizeX, 0, sizeY)
-
-        Utility:TweenObject(Main, {Size = UDim2.new(0, sizeX, 0, sizeY)}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-        Utility:TweenObject(Main.Frame, {Size = UDim2.new(0, sizeX, 0, sizeY - 8)}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-        Utility:TweenObject(TopBarF1, {Size = UDim2.new(0, sizeX - 20 - TopBarF2.Size.X.Offset - 187, 0, Window.Topbar.Height)}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-        Utility:TweenObject(TabFrame, {Size = UDim2.new(0, Window.SideBarWidth, 0, sizeY - Window.Topbar.Height - 13)}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-        --Main.Size = UDim2.new(0, sizeX, 0, sizeY)
-        --Main.Frame.Size = UDim2.new(0, sizeX, 0, sizeY - 8)
-        --TopBarF1.Size = UDim2.new(0, sizeX - 20 - TopBarF2.Size.X.Offset - 187, 0, Window.Topbar.Height)
-        --TabFrame.Size = UDim2.new(0, Window.SideBarWidth, 0, sizeY - Window.Topbar.Height - 13)
-
-        for _, EF in ipairs(ElementFolder:GetChildren()) do
-            if EF:IsA("Frame") then
-                EF.Size = UDim2.new(0, sizeX - Window.SideBarWidth - 8, 0, (Window.ActiveElementFrame == EF) and sizeY - Window.Topbar.Height - 20 - (Tags > 0 and 37 or 0) or EF.Size.Y.Offset)
-                local Scroll = EF:FindFirstChildOfClass("ScrollingFrame")
-                if Scroll then
-                    for _, item in ipairs(Scroll:GetChildren()) do
-                        if item:IsA("Frame") then
-                            item.Size = UDim2.new(0, sizeX - Window.SideBarWidth - 8 - 10, 0, item.Size.Y.Offset)
-                        end
-                    end
-                end
-            end
-        end
-        if TagFrame then
-            TagFrame.Size = UDim2.new(0, sizeX - Window.SideBarWidth - 8, 0, 35)
-            TagFrame.Position = UDim2.new(.97, 0, 1, -5)
-        end
-    end
-    
-    local ResizeHandle = _183goat:Create("Frame", {
-        Parent = UIScreen,
-        Size = UDim2.new(0, 32, 0, 32),
-        Position = UDim2.new(1, -10, 1, -10),
-        AnchorPoint = Vector2.new(0, 0),
-        BackgroundTransparency = 1,
-        ZIndex = 499,
-        Active = true,
-    }, {
-        _183goat:Create("ImageLabel", {
-            Size = UDim2.new(0, 25, 0, 25),
-            BackgroundTransparency = 1,
-            Image = "rbxassetid://97284127540888",
-            Position = UDim2.new(0, -7, 0, -7),
-            AnchorPoint = Vector2.new(0, 0),
-            ImageTransparency = 0.8,
-            ThemeID = {
-                ImageColor3 = "IconColor"
-            }
-        }),
-    })
-
-    ResizeHandle.Visible = Window.Resizable
-    function UpdateResizeHandlePos()
-        ResizeHandle.Position = UDim2.new(0, Main.AbsolutePosition.X + Main.AbsoluteSize.X - 10,0, Main.AbsolutePosition.Y + Main.AbsoluteSize.Y - 10)
-    end
-
-    local resizing, startPos, startSize
-
-    ResizeHandle.MouseEnter:Connect(function()
-        Utility:TweenObject(ResizeHandle.ImageLabel, {ImageTransparency = 0.35}, 0.15)
-    end)
-    ResizeHandle.MouseLeave:Connect(function()
-        if not resizing then
-            Utility:TweenObject(ResizeHandle.ImageLabel, {ImageTransparency = 0.8}, 0.15)
-        end
-    end)
-
-    ResizeHandle.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            resizing = true
-            startPos = input.Position
-            startSize = Window.Size
-            Utility:TweenObject(ResizeHandle.ImageLabel, {ImageTransparency = 0}, 0.1)
-        end
-    end)
-
-    ResizeHandle.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            resizing = false
-            Utility:TweenObject(ResizeHandle.ImageLabel, {ImageTransparency = 0.8}, 0.15)
-        end
-    end)
-
-    UserInputService.InputChanged:Connect(function(input)
-        if resizing and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-            local delta = input.Position - startPos
-            Window:Resize(startSize.X.Offset + delta.X, startSize.Y.Offset + delta.Y)
-        end
-    end)
-
-    UpdateResizeHandlePos()
-    Main:GetPropertyChangedSignal("AbsolutePosition"):Connect(UpdateResizeHandlePos)
-    Main:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateResizeHandlePos)
-
-    function Window:SetResizable(v)
-        ResizeHandle.Visible = v
-    end
-    UI.Window = Window
-    return Window
-end
-
-function UI:Notification(Config)
-    coroutine.wrap(function()
-        local Notification = {
-            Title = Config.Title or "Notification",
-            Desc = Config.Desc or nil,
-            Icon = Config.Icon or nil,
-            Duration = Config.Duration or 5,
-            Interactive = Config.Interactive
-        }
-
-        local NotifFrame = _183goat:Create("Frame", {
-            Parent = Island,
-            BackgroundColor3 = Color3.fromRGB(20, 20, 20),
-            BackgroundTransparency = 0.2,
-            BorderSizePixel = 0,
-            ClipsDescendants = true,
-            LayoutOrder = 2,
-            Size = UDim2.new(0, 0, 0, 30),
-            ZIndex = 150,
-            ThemeID = { BackgroundColor3 = "SideBar"}
-        }, {
-            _183goat:Create("UICorner", { CornerRadius = UDim.new(0, 12) }),
-            _183goat:Create("UIPadding", { PaddingTop = UDim.new(0, 9) }),
-            _183goat:Create("UIStroke", {
-                LineJoinMode = "Round",
-                Thickness = 0.6,
-                ThemeID = {
-                    Color = "Outline"
-                }
-            }, {
-                _183goat:Create("UIGradient", {
-                    Color = ColorSequence.new(
-                        Color3.fromRGB(255, 255, 255),
-                        Color3.fromRGB(255, 255, 255)
-                    ),
-                    Transparency = NumberSequence.new({
-                        NumberSequenceKeypoint.new(0, 0.1),
-                        NumberSequenceKeypoint.new(0.5, 1),
-                        NumberSequenceKeypoint.new(1, 1)
-                    }),
-                    Rotation = -100
-                })
-            }),
-        })
-
-        local Title = Text(NotifFrame, Notification.Title, {
-            Size = UDim2.new(1, 0, 1, 0),
-            AutomaticSize = "X",
-            ZIndex = 16,
-            FontFace = Font.new([[rbxassetid://12187365364]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
-            TextSize = 11,
-            TextColor3 = Color3.fromRGB(255, 255, 255),
-            RichText = true,
-            TextXAlignment = Enum.TextXAlignment.Left,
-            ZIndex = 151,
-            ThemeID = { TextColor3 = "Text" }
-        }, {
-            _183goat:Create("UIPadding", { PaddingLeft = UDim.new(0, 10) })
-        })
-
-        local Desc
-        if Notification.Desc then
-            Title.UIPadding.PaddingBottom = UDim.new(0, 12)
-            Desc = Text(NotifFrame, Notification.Desc, {
-                Size = UDim2.new(1, 0, 1, 0),
-                AutomaticSize = "X",
-                ZIndex = 16,
-                FontFace = Font.new([[rbxassetid://12187365364]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
-                TextSize = 10,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                RichText = true,
-                TextTransparency = 0.3,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                ZIndex = 151,
-                ThemeID = { TextColor3 = "Text" }
-            }, {
-                _183goat:Create("UIPadding", { PaddingLeft = UDim.new(0, 10),PaddingTop = UDim.new(0, 10)})
-            })
-
-        end
-    local Icon
-    if Notification.Icon then
-        Desc.UIPadding.PaddingLeft = UDim.new(0,33)
-        Title.UIPadding.PaddingLeft = UDim.new(0,33)
-        local Icon = _183goat:Create("ImageLabel", {
-            AnchorPoint = Vector2.new(0, 0.5),
-            --Image = IconsV2.GetIcon(Window.Icon),
-            BackgroundTransparency = 1,
-            Position = UDim2.new(0, 7, 0.3, 0),
-            Size = UDim2.new(0, 20, 0, 20),
-            ZIndex = 150,
-            Parent = NotifFrame,
-            ThemeID = {
-                ImageColor3 = "Notification.Icon|IconColor"
-            }
-        })
-        if Notification.Icon and IconsV2.Icon(Notification.Icon) then
-            Icon.Image = IconsV2.GetIcon(Notification.Icon)
-        elseif Notification.Icon and string.find(Notification.Icon, "rbxassetid://") then
-            Icon.Image = Notification.Icon
-        end
-    end
-        activeNotifs += 1
-        UI.Notifications = activeNotifs
-        if UI.Window and (UI.Window.IslandOpen or UI.IslandOpen) and UI.Window.Default == "Default" then
-            Utility:TweenObject(Island, {Position = UDim2.new(0.5, 0, -0.08, 0)}, 0.3)
-        else
-            Utility:TweenObject(Island, {Position = UDim2.new(0.5, 0, -0.08, 0)}, 0.3)
-        end
-
-    local NotifDelay = _183goat:Create("Frame", {
-        Parent = NotifFrame,
-        ClipsDescendants = true,
-        AnchorPoint = Vector2.new(0,1),
-        Position = UDim2.new(0, 16, 1, 0),
-        Size = UDim2.new(0, 0, 0, 1),
-        ZIndex = 155,
-        ThemeID = { BackgroundColor3 = "Text"}
-    }, {
-        _183goat:Create("UICorner", { CornerRadius = UDim.new(0, 16) }),
-    })
-
-    NotifFrame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            Utility:TweenObject(NotifFrame, {Size = UDim2.new(0, 0, 0, 30)}, 0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-            activeNotifs -= 1
-            UI.Notifications = activeNotifs
-
-            if UI.Window and (UI.Window.IslandOpen or UI.IslandOpen) and UI.Window.Default == "Default" then
-                Utility:TweenObject(Island, {Position = UDim2.new(0.5, 0, -0.08, 0)}, 0.3)
-            else
-                Utility:TweenObject(Island, {Position = UDim2.new(0.5, 0, -0.08, 0)}, 0.3)
-            end
-            if activeNotifs == 0 then
-                if UI.Window and (UI.Window.IslandOpen or UI.IslandOpen) and UI.Window.Default == "Default" then
-                    Utility:TweenObject(Island, {Position = UDim2.new(0.5, 0, -0.2, 0)}, 0.3)
-                else
-                    Utility:TweenObject(Island, {Position = UDim2.new(0.5, 0, -0.08, 0)}, 0.3)
-                end
-            end
-            task.wait(0.3)
-            NotifFrame:Destroy()
-        end
-    end)
-
-    --[[local NotifFrame1 = _183goat:Create("Frame", {
-        Parent = NotifFrame,
-        BackgroundTransparency = 0.1,
-        BorderSizePixel = 0,
-        LayoutOrder = 2,
-        ClipsDescendants = true,
-        AnchorPoint = Vector2.new(0,0),
-        Position = UDim2.new(0, 0, 0, 0),
-        Size = UDim2.new(1, 0, 1, 0),
-        ZIndex = 120,
-        ThemeID = { BackgroundColor3 = "Background"}
-    }, {
-        _183goat:Create("UICorner", { CornerRadius = UDim.new(0, 12) }),
-    })
-
-    NotifFrame.MouseEnter:connect(function()
-        Utility:TweenObject(NotifFrame1, {Size = UDim2.new(0, 150, 0, 100)}, 0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-        Utility:TweenObject(NotifFrame1, {Position = UDim2.new(0, 0, 0, 28)}, 0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    end)
-
-    NotifFrame.MouseLeave:connect(function()
-        Utility:TweenObject(NotifFrame1, {Size = UDim2.new(1, 0, 1, 0)}, 0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-        Utility:TweenObject(NotifFrame1, {Position = UDim2.new(0, 0, 0, 0)}, 0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    end)--]]
-
-        Utility:TweenObject(NotifFrame, {Size = UDim2.new(0, 150, 0, 30)}, 0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-        coroutine.wrap(function()
-            Utility:TweenObject(NotifDelay, {Size = UDim2.new(0, 118, 0, 1)}, 0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-            task.wait(0.5)
-            Utility:TweenObject(NotifDelay, {Size = UDim2.new(0, 0, 0, 1)}, Notification.Duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-        end)()
-        task.wait(Notification.Duration)
-        Utility:TweenObject(NotifFrame, {Size = UDim2.new(0, 0, 0, 30)}, 0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-
-        activeNotifs -= 1
-        UI.Notifications = activeNotifs
-
-        task.wait(0.05)
-
-        if activeNotifs == 0 then
-            if UI.Window and (UI.Window.IslandOpen or UI.IslandOpen) and UI.Window.Default == "Default" then
-                Utility:TweenObject(Island, {Position = UDim2.new(0.5, 0, -0.2, 0)}, 0.3)
-                --Utility:TweenObject(Title, {TextTransparency = 1}, 0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-                --Utility:TweenObject(Desc, {TextTransparency = 1}, 0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-                --Utility:TweenObject(Icon, {ImageTransparency = 1}, 0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-            else
-                Utility:TweenObject(Island, {Position = UDim2.new(0.5, 0, -0.08, 0)}, 0.3)
-            end
-        end
-        task.wait(0.3)
-        NotifFrame:Destroy()
-    end)()
-end
-
-
-return UI
+                Theme
