@@ -1729,7 +1729,7 @@ end)
             BorderColor3 = Color3.new(0, 0, 0),
             ClipsDescendants = true,
             BackgroundTransparency = 1,
-            Size = UDim2.new(1, Window.Size.X.Offset-Window.SideBarWidth-8, 0, 0),
+Size = UDim2.new(0, Window.Size.X.Offset-Window.SideBarWidth-8, 0, 0)
             BackgroundColor3 = Color3.fromRGB(33, 33, 33),
             ZIndex = 4,
             ThemeID = {
